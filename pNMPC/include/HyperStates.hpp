@@ -394,9 +394,6 @@ public:
 		return{ HyperStates(Paren[ParenOps::open] + std::to_string(s_lhs) + sOps[Operation::min] + std::to_string(s_rhs) + Paren[ParenOps::close]) };
 	}
 
-
-	// Normed cost for States, Inputs and Parameters
-	//friend HyperStates weightedNorm(const MATReal& Q, const TYPE& type, const int& normVal = 2);
 	// Output stream
 	friend std::ostream& operator<<(std::ostream& os, const HyperStates& S);
 	// Return current hyperstate
