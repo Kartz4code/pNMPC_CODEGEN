@@ -1,7 +1,7 @@
 # PNMPC Code Generation Tool
 
 ## MATLAB/Simulink SETUP
-To create a local repo of the project follow the steps 
+To create a local repo of the project and use MATLAB/Simulink interface follow the steps 
 * Install GIT Bash for your OS and platform version 
 * Clone the pNMPC CODEGEN project using git clone https://github.com/Kartz4code/pNMPC_CODEGEN.git
 * Open MATLAB and add the cloned directory into MATLAB's environment path variable 
