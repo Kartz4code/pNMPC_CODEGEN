@@ -44,6 +44,7 @@ CPP_FLAG = '-DENABLE_CPP=1';
 CUDA_FLAG = '-DENABLE_CUDA=1';
 MEX_FLAG = '-DENABLE_MEX=1';
 DSPACE_FLAG = '-DENABLE_DSPACE=1';
+MATLAB_INTERFACE_FLAG = '-DENABLE_MATLAB_INTERFACE=1';
 ALL_FLAGS = [];
 makeFile = -1;
 %% Switch case 
@@ -52,18 +53,18 @@ if(~isempty(varargin))
     if(strcmp(varargin{1},'clean'))
         makeFile = 0;
     elseif(strcmp(varargin{1},'SFUNC'))
-        ALL_FLAGS = [SFUNC_FLAG ' ' CPP_FLAG ' ' DSPACE_FLAG];
+        ALL_FLAGS = [SFUNC_FLAG ' ' CPP_FLAG ' ' DSPACE_FLAG ' ' MATLAB_INTERFACE_FLAG];
     elseif(strcmp(varargin{1},'MEX'))
-        ALL_FLAGS = [MEX_FLAG ' ' CPP_FLAG];
+        ALL_FLAGS = [MEX_FLAG ' ' CPP_FLAG ' ' MATLAB_INTERFACE_FLAG];
     elseif(strcmp(varargin{1},'MEXCUDA'))
-        ALL_FLAGS = CUDA_FLAG;
+        ALL_FLAGS = [CUDA_FLAG ' ' MATLAB_INTERFACE_FLAG];
     else
         Ex = MException('MyComponent:noSuchVariable', ...
         'Option %s not found',varargin{1});
         throw(Ex);
     end
 else
-    ALL_FLAGS = [SFUNC_FLAG ' ' CPP_FLAG];
+    ALL_FLAGS = [SFUNC_FLAG ' ' CPP_FLAG ' ' MATLAB_INTERFACE_FLAG];
 end
 %% Building and mexing
 switch(makeFile)
