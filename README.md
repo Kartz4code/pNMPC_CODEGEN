@@ -12,6 +12,6 @@ To create a local repo of the project and use MATLAB/Simulink interface follow t
 - To generate CUDA MEX make files, run "make MEXCUDA" and "generateMEXCUDA" 
 ```
 
-The 'Source.cpp' is the main file where the pNMPC controller codes are entered and the file name must not be changed. 
+The `Source.cpp` is the main file where the pNMPC controller codes are entered and the file name must not be changed. 
 
-The example code with this repo provides a boiler plate code for implementation of pNMPC controller for control of 2D crane. The corresponding Simlink file is 'Crane2D.slx'   
+The example code with this repo provides a boiler plate code for implementation of pNMPC controller for control of 2D crane. The corresponding Simlink file is `Crane2D.slx`   
