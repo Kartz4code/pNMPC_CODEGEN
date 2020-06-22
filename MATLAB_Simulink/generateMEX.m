@@ -46,13 +46,14 @@ delete('CCODEGEN\include\*');
 delete('CCODEGEN\src\*');
 %% Building and mexing from C++ files 
 srcFile = 'Source.cpp'; 
+MATLAB_INTERFACE_FLAG = '-DENABLE_MATLAB_INTERFACE=1';
 OBJ = []; fileList = dir([pwd '\pNMPC_bin\*.obj']);
 for i=1:size(fileList,1)
     OBJ = [OBJ ' ' pwd '\pNMPC_bin\' fileList(i).name]; 
 end
 OBJ = [srcFile ' ' OBJ ];
 INCLUDE = ['-I' fullfile(pwd,'\pNMPC\include')];
-eval(['mex ' INCLUDE ' ' OBJ])
+eval(['mex ' MATLAB_INTERFACE_FLAG ' ' INCLUDE ' ' OBJ])
 % Run mex generated Source mex file to generate C code 
 Source
 disp('============= C code generation completed successfully ! ============= ');
