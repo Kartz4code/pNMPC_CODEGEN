@@ -14,4 +14,4 @@ To create a local repo of the project and use MATLAB/Simulink interface follow t
 
 The `Source.cpp` is the main file where the pNMPC controller codes are entered and the file name must not be changed. 
 
-The example code with this repo provides a boiler plate code for implementation of pNMPC controller for control of 2D crane. The corresponding Simlink file is `Crane2D.slx`   
+The 2D Crane example with this repo provides a boiler plate code for implementation of pNMPC controller for control of 2D crane. The corresponding Simulink file is `Crane2D.slx`.   
