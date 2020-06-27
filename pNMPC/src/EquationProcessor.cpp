@@ -52,11 +52,6 @@ MATHyperStates EquationProcessor::operator^(const HyperStates& s)
 	return ((this->_h_MAT) ^ s);
 }
 
-MATHyperStates EquationProcessor::operator%(const HyperStates& s)
-{
-	return ((this->_h_MAT) ^ s);
-}
-
 MATHyperStates EquationProcessor::operator<=(const HyperStates& s)
 {
 	return this->_h_MAT <= s;
@@ -110,11 +105,6 @@ MATHyperStates EquationProcessor::operator/(const Real& val)
 }
 
 MATHyperStates EquationProcessor::operator^(const Real& val)
-{
-	return ((this->_h_MAT) ^ val);
-}
-
-MATHyperStates EquationProcessor::operator%(const Real& val)
 {
 	return ((this->_h_MAT) ^ val);
 }

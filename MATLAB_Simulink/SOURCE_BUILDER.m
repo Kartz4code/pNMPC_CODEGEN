@@ -1,31 +1,5 @@
-%
-%    This file is part of pNMPC software.
-%    Copyright (c) 2020 GIPSA lab [https://github.com/Kartz4code/pNMPC_CODEGEN]
-%
-%    Main developer - Karthik Murali Madhavan Rathai
-%
-%    pNMPC - A Code Generation Software Tool For Implementation of Derivative Free
-%    Parameterized NMPC Scheme for Embedded Control Systems
-%    The software was developed by Karthik Murali Madhavan Rathai under the supervision of
-%    Mazen Alamir and Olivier Sename affiliated to Univ. Grenoble Alpes, CNRS, Grenoble INP,
-%    GIPSA lab, 38000 Grenoble, France.
-%
-%    pNMPC software is free software: you can redistribute it and/or modify
-%    it under the terms of the GNU General Public License as published by
-%    the Free Software Foundation, either version 3 of the License, or
-%    (at your option) any later version.
-%
-%    pNMPC software is distributed in the hope that it will be useful,
-%    but WITHOUT ANY WARRANTY; without even the implied warranty of
-%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-%    GNU General Public License for more details.
-%
-%    You should have received a copy of the GNU General Public License
-%    along with pNMPC software.  If not, see <http://www.gnu.org/licenses/>.
-%
-%
-
 function SOURCE_BUILDER
+
 % Beginning
 fileID = fopen('Source.cpp','w');
 fprintf(fileID, '#include "mex.h"\n');
@@ -139,11 +113,11 @@ fprintf(fileID, ['BEGIN_OBJECTIVES\n']);
 %%%%%%%%%%%%% Lagrangian objectives %%%%%%%%%%%%%
     if(exist('LagrangianObjective.mat'))
         load('LagrangianObjective.mat');
-        Fields = fieldnames(Lagrangian);
+        Fields = fieldnames(LagrangianObjective);
         fprintf(fileID, ['  BEGIN_LAGRANGIAN\n']);
-        for i=1:size( struct2table(Lagrangian), 2)
+        for i=1:size( struct2table(LagrangianObjective), 2)
             LagEqLHS = Fields{i};
-            LagEqRHS = pNMPCPowerCompliance(char(eval(['Lagrangian(1).' Fields{i}])));
+            LagEqRHS = pNMPCPowerCompliance(char(eval(['LagrangianObjective(1).' Fields{i}])));
             fprintf(fileID, ['	ScalarObjective ' LagEqLHS ' = ' LagEqRHS ';\n']);
         end    
         fprintf(fileID, ['  END_LAGRANGIAN\n']);
@@ -151,11 +125,11 @@ fprintf(fileID, ['BEGIN_OBJECTIVES\n']);
 %%%%%%%%%%%%% Mayer objectives %%%%%%%%%%%%%
     if(exist('MayerObjective.mat'))
         load('MayerObjective.mat');
-        Fields = fieldnames(Mayer);
+        Fields = fieldnames(MayerObjective);
         fprintf(fileID, ['  BEGIN_MAYER\n']);
-        for i=1:size( struct2table(Mayer), 2)
+        for i=1:size( struct2table(MayerObjective), 2)
             MayEqLHS = Fields{i};
-            MayEqRHS = pNMPCPowerCompliance(char(eval(['Mayer(1).' Fields{i}])));
+            MayEqRHS = pNMPCPowerCompliance(char(eval(['MayerObjective(1).' Fields{i}])));
             fprintf(fileID, ['	ScalarObjective ' MayEqLHS ' = ' MayEqRHS ';\n']);
         end    
         fprintf(fileID, ['  END_MAYER\n']);

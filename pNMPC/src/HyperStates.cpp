@@ -122,13 +122,6 @@ HyperStates HyperStates::operator^(const HyperStates& s)
 		+ this->getExpression() + sOps[Operation::power] + s.getAliasExpression() + Paren[ParenOps::close]) };
 }
 
-HyperStates HyperStates::operator%(const HyperStates& s)
-{
-	this->setExpression(this->getAliasExpression());
-	return{ HyperStates(Paren[ParenOps::open]
-		+ this->getExpression() + sOps[Operation::power] + s.getAliasExpression() + Paren[ParenOps::close]) };
-}
-
 HyperStates HyperStates::operator<=(const HyperStates& s)
 {
 	this->setExpression(this->getAliasExpression());
@@ -186,13 +179,6 @@ HyperStates HyperStates::operator^(const Real& val)
 	this->setExpression(this->getAliasExpression());
 	return{ HyperStates(Paren[ParenOps::open]
 		+ this->getExpression() + sOps[Operation::power] + std::to_string(val) +  Paren[ParenOps::close]) };
-}
-
-HyperStates HyperStates::operator%(const Real& val)
-{
-	this->setExpression(this->getAliasExpression());
-	return{ HyperStates(Paren[ParenOps::open]
-		+ this->getExpression() + sOps[Operation::power] + std::to_string(val) + Paren[ParenOps::close]) };
 }
 
 HyperStates HyperStates::operator<=(const Real& val)

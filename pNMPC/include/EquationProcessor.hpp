@@ -40,7 +40,6 @@ public:
 	MATHyperStates operator-(const HyperStates& s);
 	MATHyperStates operator/(const HyperStates& s);
 	MATHyperStates operator^(const HyperStates& s);
-	MATHyperStates operator%(const HyperStates& s);
 	MATHyperStates operator<=(const HyperStates& s);
 	MATHyperStates operator>=(const HyperStates& s);
 
@@ -57,7 +56,6 @@ public:
 	MATHyperStates operator-(const Real& val);
 	MATHyperStates operator/(const Real& val);
 	MATHyperStates operator^(const Real& val);
-	MATHyperStates operator%(const Real& val);
 	MATHyperStates operator<=(const Real& val);
 	MATHyperStates operator>=(const Real& val);
 

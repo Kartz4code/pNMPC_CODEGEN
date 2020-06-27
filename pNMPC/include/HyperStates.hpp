@@ -41,7 +41,6 @@ public:
 	HyperStates operator-(const HyperStates& s);
 	HyperStates operator/(const HyperStates& s);
 	HyperStates operator^(const HyperStates& s);
-	HyperStates operator%(const HyperStates& s);
 	HyperStates operator<=(const HyperStates& s);
 	HyperStates operator>=(const HyperStates& s);
 
@@ -51,7 +50,6 @@ public:
 	HyperStates operator-(const Real& val);
 	HyperStates operator/(const Real& val);
 	HyperStates operator^(const Real& val);
-	HyperStates operator%(const Real& val);
 	HyperStates operator<=(const Real& val);
 	HyperStates operator>=(const Real& val);
 	// Negation operator
@@ -229,13 +227,6 @@ public:
 
 	template<typename T = HyperStates>
 	friend HyperStates operator^(const Real& lhs, HyperStates& rhs) {
-		rhs.setExpression(rhs.getAliasExpression());
-		return{ HyperStates(Paren[ParenOps::open]
-			+ std::to_string(lhs) + sOps[Operation::power] + rhs.getExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates operator%(const Real& lhs, HyperStates& rhs) {
 		rhs.setExpression(rhs.getAliasExpression());
 		return{ HyperStates(Paren[ParenOps::open]
 			+ std::to_string(lhs) + sOps[Operation::power] + rhs.getExpression() + Paren[ParenOps::close]) };

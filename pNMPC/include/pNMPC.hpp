@@ -438,16 +438,6 @@ namespace pNMPC {
 			return ResultPower;
 		}
 
-		// templatized Scalar exponent
-		MAT<T> operator%(const T& rhs)
-		{
-			MAT<T> ResultPower(this->getNumRows(), this->getNumColumns());
-			for (size_t i{ 0 }; i < this->getNumRows(); i++)
-				for (size_t j{ 0 }; j < this->getNumColumns(); j++)
-					ResultPower.setMatrixElement(i, j, ((this->getMatrixElement(i, j)) ^ rhs));
-			return ResultPower;
-		}
-
 		// Matrix negation
 		MAT<T> operator-()
 		{
