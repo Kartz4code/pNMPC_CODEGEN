@@ -15,4 +15,4 @@ To create a local repo of the project and use MATLAB/Simulink interface follow t
 - Open `Main.m` file, which is an example for design of pNMPC controller for 2D-Crane control. 
 - The syntax corresponds to MATLAB interface codes for the toolbox. Run the file to generate the S-function block in the `Crane.slx` Simulink file.
 - Place the generated S-function block at appropriate place and connect the links. 
-- General Tip: To generate the S-function call `generateSFUNC(<Name of your Simulink file>)`. This is shown in the last line of `Main.m` file.
+- General Tip: To generate the S-function, call `generateSFUNC(<Name of your Simulink file>)`. This is shown in the last line of `Main.m` file.
