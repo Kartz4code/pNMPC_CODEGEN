@@ -11,7 +11,7 @@ To create a local repo of the project and use MATLAB/Simulink interface follow t
 
 ## MATLAB/Simulink interface (S-function) with 2D Crane example
 ### S-function generation 
-- To generate S-Function make files, run "make SFUNC". This will populate the pNMPC_bin directory with the object files required during the S-function compilation process.
+- To generate S-Function make files, run `make SFUNC`. This will populate the pNMPC_bin directory with the object files required during the S-function compilation process.
 - Open `Main.m` file, which is an example for design of pNMPC controller for 2D-Crane control. 
 - The syntax corresponds to MATLAB interface codes for the toolbox. Run the file to generate the S-function block in the `Crane.slx` Simulink file.
 - Place the generated S-function block at appropriate place and connect the links. 
