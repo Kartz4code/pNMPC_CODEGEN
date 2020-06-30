@@ -45,7 +45,7 @@ for i=1:countArray
             l = l-1;
         end
         m = m - 1;
-        if(m == 0 || l < 0)
+        if(m == 0 || l <= 0)
             break;
         end
     end
