@@ -230,22 +230,24 @@ char checkCondition(Real_C P[NMAX], const ParaStructC* params, Real_C(*funcJ)(Re
 	switch (JorG)
 	{
 	case 0:
-		if ((funcJInterface(P, params, funcJ, funcG, PCand, index) < funcJInterface(P, params, funcJ, funcG, P[index], index) && funcGInterface(P, params, funcJ, funcG, PCand, index) <= 0) || (funcJInterface(P, params, funcJ, funcG, PCand, index) <= funcJInterface(P, params, funcJ, funcG, P[index], index) && funcGInterface(P, params, funcJ, funcG, PCand, index) < 0))
+        Real_C funcJPCand = funcJInterface(P, params, funcJ, funcG, PCand, index);
+        Real_C funcJPIndex = funcJInterface(P, params, funcJ, funcG, P[index], index);
+        Real_C funcGPCand = funcGInterface(P, params, funcJ, funcG, PCand, index);
+		if ((funcJPCand < funcJPIndex && funcGPCand <= 0) || (funcJPCand <= funcJPIndex && funcGPCand < 0))
 			Condition = 1;
-		break;
+        return Condition;
 	case 1:
 		if (funcGInterface(P, params, funcJ, funcG, PCand, index) < funcGInterface(P, params, funcJ, funcG, P[index], index))
 			Condition = 1;
-		break;
+		return Condition;
 	case 2:
 		if (funcJInterface(P, params, funcJ, funcG, PCand, index) < funcJInterface(P, params, funcJ, funcG, P[index], index) && funcGInterface(P, params, funcJ, funcG, PCand, index) <= 0)
 			Condition = 1;
-		break;
+		return Condition;
 	default:
-		break;
+		return Condition;
 	}
 
-	return Condition;
 }
 
 __device__
@@ -301,34 +303,29 @@ ResVec runSQP(Real_C* P_in, const ParaStructC* params, Real_C(*funcJ)(Real_C* P,
 __global__
 void SQPCUDA_BBO(Real_C* P_inDevice, Real_C* P_outDevice, ParaStructC* params, const funcPointer funcJ, const funcPointer funcG, optimset_SQP* opt)
 {
-	const int j = blockIdx.x*blockDim.x + threadIdx.x;
-	Real_C temp[NMAX]; 
+	const int j = blockIdx.x*blockDim.x + threadIdx.x; 
+	Real_C temp[NMAX];
 	if (j < NMAX)
 	{
-		for (unsigned i = 0; i < opt->Niter; i++)
+		for (uint16_t i = 0; i < opt->Niter; i++)
 		{
-            temp[j] = P_inDevice[j];
-            __syncthreads();
-			#if DEBUG
-				//printf("Outer iteration: %d, Outer iteration: %d\n", i, j);
-				// printf("%f %f %f %f %f\n", opt->alpha[0], opt->alpha[1], opt->alpha[2], opt->alpha[3], opt->alpha[4]);
-				printf("%f %f %f %f %f %f %f %f %f %f\n", P_inDevice[0], P_inDevice[1], P_inDevice[2], P_inDevice[3], P_inDevice[4],
-														  P_inDevice[5], P_inDevice[6], P_inDevice[7], P_inDevice[8], P_inDevice[9]);
-			#endif
+            //temp[j] = P_inDevice[j];
+			for (uint16_t l = 0; l < NMAX; l++)
+				temp[l] = P_inDevice[l];
+
 			// Distribution
-			ResVec res = runSQP(P_inDevice, params, funcJ, funcG, opt, j);
-			if (checkCondition(P_inDevice, params, funcJ, funcG, res.PCand, j, res.JorG) == 1)
+			ResVec res = runSQP(temp, params, funcJ, funcG, opt, j);
+			if (checkCondition(temp, params, funcJ, funcG, res.PCand, j, res.JorG))
 			{
 				temp[j] = res.PCand;
 				opt->alpha[j] = opt->betaPlus*opt->alpha[j];
 			}
-			else
-				opt->alpha[j] = max(0.0f, opt->betaMinus*opt->alpha[j]);			
+			else 
+				opt->alpha[j] = max(0.00f, opt->betaMinus*opt->alpha[j]);
+
             // Consensus
-			P_inDevice = temp; P_outDevice[j] = temp[j];
-            __syncthreads();
-			for (uint16_t l = 0; l < NMAX; l++)
-				P_inDevice[l] = P_outDevice[l];
+			P_inDevice[j] = temp[j];
+			P_outDevice[j] = temp[j];
 		}
 	}
 }
