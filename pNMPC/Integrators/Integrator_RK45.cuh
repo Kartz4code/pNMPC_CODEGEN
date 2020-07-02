@@ -65,7 +65,7 @@ Real_C* Integrator_RK45(Real_C* X, Real_C* U, Real_C* P, Real_C*(*func)(Real_C*,
 
 	// Final result
 	for (uint16_t i = 0; i < nx; i++)
-		X_RK45_[i] = X[i] + (0.167f)*(k1[i] + 2.0f * k2[i] + 2.0f * k3[i] + k4[i]);
+		X_RK45_[i] = X[i] + (1.0f/6.0f)*(k1[i] + 2.0f * k2[i] + 2.0f * k3[i] + k4[i]);
 
 	return X_RK45_;
 }
