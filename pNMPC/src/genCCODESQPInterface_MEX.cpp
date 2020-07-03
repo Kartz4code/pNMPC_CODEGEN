@@ -306,12 +306,11 @@ void PNMPCGEN::genCCodeSQPInterface_MEX()
 	#if(ENABLE_CUDA)
 		// Device in-data and out-data
 		CCODE_STREAM(COMMENT("Device in-data and out-data"));
-		CCODE_STREAM_T("Real_C* P_inDevice, *P_outDevice");
+		CCODE_STREAM_T("Real_C* P_inDevice");
 		CCODE_STREAM_T("optimset_SQP* opt_device; ParaStructC* params_device");
-		CCODE_STREAM_T("cudaMalloc((void**)&P_inDevice, NMAX*sizeof(Real_C))");
-		CCODE_STREAM_T("cudaMalloc((void**)&P_outDevice, NMAX*sizeof(Real_C))");
-		CCODE_STREAM_T("cudaMalloc((void**)&opt_device, sizeof(optimset_SQP))");
-		CCODE_STREAM_T("cudaMalloc((void**)&params_device, sizeof(ParaStructC))");
+		CCODE_STREAM_T("cudaMalloc(&P_inDevice, NMAX*sizeof(Real_C))");
+		CCODE_STREAM_T("cudaMalloc(&opt_device, sizeof(optimset_SQP))");
+		CCODE_STREAM_T("cudaMalloc(&params_device, sizeof(ParaStructC))");
 	#endif
 
 	// Start clock
@@ -333,8 +332,8 @@ void PNMPCGEN::genCCodeSQPInterface_MEX()
 	#if(!ENABLE_CUDA)
 		CCODE_STREAM_T("BBO_SQPFunction(U_IN, &paramsSQP, &func2BBOOBJ_SQP, &func2BBOCONST_SQP, &opt)");
 	#elif(ENABLE_CUDA)
-		CCODE_STREAM_T("SQPCUDA_BBO <<< (NMAX + TPB - 1) / TPB, TPB >>> (P_inDevice, P_outDevice, params_device, funcJHost, funcGHost, opt_device)");
-		CCODE_STREAM_T("cudaMemcpy(U_OUT, P_outDevice, NMAX*sizeof(Real_C), cudaMemcpyDeviceToHost)");
+		CCODE_STREAM_T("SQPCUDA_BBO <<< (NMAX + TPB - 1) / TPB, TPB >>> (P_inDevice, params_device, funcJHost, funcGHost, opt_device)");
+		CCODE_STREAM_T("cudaMemcpy(U_OUT, P_inDevice, NMAX*sizeof(Real_C), cudaMemcpyDeviceToHost)");
 	#endif
 
 	// End clock
@@ -414,7 +413,6 @@ void PNMPCGEN::genCCodeSQPInterface_MEX()
 		// Free memory 
 		CCODE_STREAM(COMMENT("CUDA free memory"));
 		CCODE_STREAM_T("cudaFree(P_inDevice)");
-		CCODE_STREAM_T("cudaFree(P_outDevice)");
 		CCODE_STREAM_T("cudaFree(opt_device)");
 		CCODE_STREAM_T("cudaFree(params_device)");
 	#endif
