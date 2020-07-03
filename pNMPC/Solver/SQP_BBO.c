@@ -262,19 +262,18 @@ inline char checkCondition(Real_C P[NMAX], ParaStructC* params, Real_C(*funcJ)(R
         funcGPCand = funcGInterface(P, params, funcJ, funcG, PCand, index);
 		if ((funcJPCand < funcJPIndex && funcGPCand <= 0) || (funcJPCand <= funcJPIndex && funcGPCand < 0))
 			Condition = 1;
-		break;
+		return Condition;
 	case 1:
 		if (funcGInterface(P, params, funcJ, funcG, PCand, index) < funcGInterface(P, params, funcJ, funcG, P[index], index))
 			Condition = 1;
-		break;
+		return Condition;
 	case 2:
 		if (funcJInterface(P, params, funcJ, funcG, PCand, index) < funcJInterface(P, params, funcJ, funcG, P[index], index) && funcGInterface(P, params, funcJ, funcG, PCand, index) <= 0)
 			Condition = 1;
-		break;
+		return Condition;
 	default:
-		break;
+		return Condition;
 	}
-	return Condition;
 }
 
 void BBO_SQPFunction(Real_C P_in[NMAX], ParaStructC* params, Real_C(*funcJ)(Real_C[NMAX], const void*), Real_C(*funcG)(Real_C[NMAX], const void*), optimset_SQP* opt)
