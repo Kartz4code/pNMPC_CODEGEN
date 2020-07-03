@@ -335,7 +335,6 @@ void SQPCUDA_BBO(Real_C* P_inDevice, ParaStructC* params, const funcPointer func
 	{
 		for (uint16_t i = 0; i < opt->Niter; i++)
 		{
-            //temp[j] = P_inDevice[j];
 			for (uint16_t l = 0; l < NMAX; l++)
 				temp[l] = P_inDevice[l];
 
@@ -349,7 +348,7 @@ void SQPCUDA_BBO(Real_C* P_inDevice, ParaStructC* params, const funcPointer func
 			else 
 				opt->alpha[j] = max(0.00f, opt->betaMinus*opt->alpha[j]);
 
-            // Consensus
+            		// Consensus
 			P_inDevice[j] = temp[j];
 		}
 	}
