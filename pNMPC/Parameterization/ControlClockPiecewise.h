@@ -43,14 +43,13 @@ inline Real_C ControlClockPieceWise(Real_C current_clock, Real_C final_clock, Re
 			if (current_clock >= (Real_C)(CP[i] * final_clock) && current_clock <= (Real_C)(CP[i + 1] * final_clock))
 			{
 				u_clock = U_CP[i];
-				break;
+				return u_clock;
 			}
 			else if (current_clock >= (CP[N - 1] * final_clock))
 			{
 				u_clock = U_CP[N - 1];
-				break;
+				return u_clock;
 			}
 		}
 	}
-	return u_clock;
 }
