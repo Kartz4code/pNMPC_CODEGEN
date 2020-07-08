@@ -36,7 +36,7 @@ for i=1:size( struct2table(TerminalConstraints), 2)
     assignin('base', TerminalConstraintsEqLHS, vpa(eval(['TerminalConstraints(1).' Fields{i}]),5));
 end
 if(isConst && isTerm)
-    save('TerminalConstraints', 'TerminalConstraints');
+    save('pNMPC_bin/TerminalConstraints', 'TerminalConstraints');
 end
 isTerm = 0;
 end

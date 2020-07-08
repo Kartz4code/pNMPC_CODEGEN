@@ -36,7 +36,7 @@ for i=1:size( struct2table(RegularConstraints), 2)
     assignin('base', RegularConstraintsEqLHS, vpa(eval(['RegularConstraints(1).' Fields{i}]),5));
 end
 if(isConst && isReg)
-    save('RegularConstraints', 'RegularConstraints');
+    save('pNMPC_bin/RegularConstraints', 'RegularConstraints');
 end
 isReg = 0;
 end

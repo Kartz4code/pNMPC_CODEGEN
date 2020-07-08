@@ -26,8 +26,27 @@
 %
 
 function [ControlParamZ] = ControlParameterization(SymInput,Type,Points,InputMin,InputMax)
-if(exist('Inputs.mat'))
-    load('Inputs.mat');
+if nargin<1 
+    disp('Error***: ------------------- Enter at least the input for parameterization -------------------');
+    return; 
+elseif nargin<2 
+    Type = 'Linear';
+    Points = 1;
+    InputMin = -999999999999;
+    InputMax = +999999999999;
+elseif nargin<3
+    Points = 1;
+    InputMin = -999999999999;
+    InputMax = +999999999999;
+elseif nargin<4
+    InputMin = -999999999999;
+    InputMax = +999999999999;
+elseif nargin<5
+    InputMax = +999999999999;
+end
+
+if(exist('pNMPC_bin/Inputs.mat'))
+    load('pNMPC_bin/Inputs.mat');
     Fields = fieldnames(InputsStruct);
     isSymInput = 0;
     for i = 1:size( struct2table(InputsStruct), 2)
@@ -56,6 +75,6 @@ ControlParamZ.Points = Points;
 ControlParamZ.InputMin = InputMin;
 ControlParamZ.InputMax = InputMax;
 
-save(['ControlParameterization_' char(SymInput)],'ControlParamZ');
+save(['pNMPC_bin/ControlParameterization_' char(SymInput)],'ControlParamZ');
 end
 

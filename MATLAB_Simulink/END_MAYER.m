@@ -36,7 +36,7 @@ for i=1:size( struct2table(MayerObjective), 2)
     assignin('base', MayerObjectiveEqLHS, vpa(eval(['MayerObjective(1).' Fields{i}]),5));
 end
 if(isObj && isMay)
-    save('MayerObjective', 'MayerObjective');
+    save('pNMPC_bin/MayerObjective', 'MayerObjective');
 end
 isMay = 0;
 end

@@ -36,7 +36,7 @@ for i=1:size( struct2table(DiffEquation), 2)
     assignin('base', DiffEquationEqLHS, vpa(eval(['DiffEquation(1).' Fields{i}]),5));
 end
 if(isDiff)
-    save('DiffEquation', 'DiffEquation');
+    save('pNMPC_bin/DiffEquation', 'DiffEquation');
 end
 isDiff = 0;
 end

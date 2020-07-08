@@ -29,38 +29,38 @@ function END_PNMPC_CONTROLLER
 global ispNMPC;
 if(ispNMPC)
     SOURCE_BUILDER;
-    if(exist('TerminalConstraints.mat'))
-        delete('TerminalConstraints.mat');
+    if(exist('pNMPC_bin/TerminalConstraints.mat'))
+        delete('pNMPC_bin/TerminalConstraints.mat');
     end
-    if(exist('RegularConstraints.mat'))
-        delete('RegularConstraints.mat');
+    if(exist('pNMPC_bin/RegularConstraints.mat'))
+        delete('pNMPC_bin/RegularConstraints.mat');
     end
-    if(exist('LagrangianObjective.mat'))
-        delete('LagrangianObjective.mat');
+    if(exist('pNMPC_bin/LagrangianObjective.mat'))
+        delete('pNMPC_bin/LagrangianObjective.mat');
     end
-    if(exist('MayerObjective.mat'))
-        delete('MayerObjective.mat');
+    if(exist('pNMPC_bin/MayerObjective.mat'))
+        delete('pNMPC_bin/MayerObjective.mat');
     end
-    if(exist('ParameterizationMap.mat'))
-        delete('ParameterizationMap.mat');
+    if(exist('pNMPC_bin/ParameterizationMap.mat'))
+        delete('pNMPC_bin/ParameterizationMap.mat');
     end
-    if(exist('DiffEquation.mat'))
-        delete('DiffEquation.mat');
+    if(exist('pNMPC_bin/DiffEquation.mat'))
+        delete('pNMPC_bin/DiffEquation.mat');
     end
-    if(exist('Inputs.mat'))   
-        load('Inputs.mat');
+    if(exist('pNMPC_bin/Inputs.mat'))   
+        load('pNMPC_bin/Inputs.mat');
         Fields = fieldnames(InputsStruct);
     for i = 1:size( struct2table(InputsStruct), 2)
         InputsRHS = Fields{i};
-        eval(['delete(''' 'ControlParameterization_' InputsRHS '.mat' ''');']);
+        eval(['delete(''' 'pNMPC_bin/ControlParameterization_' InputsRHS '.mat' ''');']);
     end
-        delete('Inputs.mat');
+        delete('pNMPC_bin/Inputs.mat');
     end
-    if(exist('States.mat'))
-        delete('States.mat');
+    if(exist('pNMPC_bin/States.mat'))
+        delete('pNMPC_bin/States.mat');
     end
-    if(exist('Params.mat'))
-        delete('Params.mat');
+    if(exist('pNMPC_bin/Params.mat'))
+        delete('pNMPC_bin/Params.mat');
     end
 end
 ispNMPC = 0;

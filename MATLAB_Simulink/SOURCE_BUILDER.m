@@ -230,6 +230,33 @@ if(isfield(pNMPCCODEGEN,'setTolerance'))
         return;
     end
 end
+% Set solver alpha value
+if(isfield(pNMPCCODEGEN,'setAlpha'))
+    if(isnumeric(pNMPCCODEGEN.setAlpha) && pNMPCCODEGEN.setAlpha > 0)
+        fprintf(fileID,['pNMPC->getSolver()->setAlpha(' num2str(pNMPCCODEGEN.setAlpha) ');\n']);
+    else
+        disp('Error***: ------------------- Enter a valid postive and integral number -------------------');
+        return;
+    end
+end
+% Set solver betaminus value
+if(isfield(pNMPCCODEGEN,'setBetaMinus'))
+    if(isnumeric(pNMPCCODEGEN.setBetaMinus) && pNMPCCODEGEN.setBetaMinus > 0)
+        fprintf(fileID,['pNMPC->getSolver()->setBetaMinus(' num2str(pNMPCCODEGEN.setBetaMinus) ');\n']);
+    else
+        disp('Error***: ------------------- Enter a valid postive and integral number -------------------');
+        return;
+    end
+end
+% Set solver betaplus value
+if(isfield(pNMPCCODEGEN,'setBetaPlus'))
+    if(isnumeric(pNMPCCODEGEN.setBetaPlus) && pNMPCCODEGEN.setBetaPlus > 0)
+        fprintf(fileID,['pNMPC->getSolver()->setBetaPlus(' num2str(pNMPCCODEGEN.setBetaPlus) ');\n']);
+    else
+        disp('Error***: ------------------- Enter a valid postive and integral number -------------------');
+        return;
+    end
+end
 % Set constraint form
 if(isfield(pNMPCCODEGEN,'setConstForm'))
     if(strcmp(pNMPCCODEGEN.setConstForm,'FORM_1') || strcmp(pNMPCCODEGEN.setConstForm,'FORM_2'))
@@ -266,6 +293,16 @@ if(isfield(pNMPCCODEGEN,'setNeedObjective'))
         return;
     end
 end
+% Set threads per block
+if(isfield(pNMPCCODEGEN,'setThreadsPerBlock'))
+    if(mod(pNMPCCODEGEN.setThreadsPerBlock,1) == 0 && pNMPCCODEGEN.setThreadsPerBlock > 0)
+        fprintf(fileID,['pNMPC->setThreadsPerBlock(' num2str(pNMPCCODEGEN.setThreadsPerBlock) ');\n']);
+    else
+        disp('Error***: ------------------- Enter a valid postive and integral number -------------------');
+        return;
+    end
+end
+
 
 % Ending
 fprintf(fileID, '// Generate C code\n');  

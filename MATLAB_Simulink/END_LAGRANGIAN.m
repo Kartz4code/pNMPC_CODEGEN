@@ -36,7 +36,7 @@ for i=1:size( struct2table(LagrangianObjective), 2)
     assignin('base', LagrangianObjectiveEqLHS, vpa(eval(['LagrangianObjective(1).' Fields{i}]),5));
 end
 if(isObj && isLag)
-    save('LagrangianObjective', 'LagrangianObjective');
+    save('pNMPC_bin/LagrangianObjective', 'LagrangianObjective');
 end
 isLag = 0;
 end

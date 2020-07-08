@@ -35,7 +35,7 @@ for i=1:size( struct2table(ParameterizationMap), 2)
     assignin('base', ParameterizationMapEqLHS, vpa(eval(['ParameterizationMap(1).' Fields{i}]),5));
 end
 if(isParameterization)
-    save('ParameterizationMap', 'ParameterizationMap');
+    save('pNMPC_bin/ParameterizationMap', 'ParameterizationMap');
 end
 isParameterization = 0;
 end
