@@ -16,3 +16,6 @@ To create a local repo of the project and use MATLAB/Simulink interface follow t
 - The syntax corresponds to MATLAB interface codes for the toolbox. Run the file to generate the S-function block in the `Crane.slx` Simulink file.
 - Place the generated S-function block at appropriate place and connect the links. 
 - General Tip: To generate the S-function, call `generateSFUNC(<Name of your Simulink file>)`. This is shown in the last line of `Main.m` file.
+
+## Caveat 
+As every software is not infallible to error, so is mine too. Kindly, feel free to try it and in case if you encounter any bugs, issues or errors let me know :). Your feedback would constanly motivate me to make this software a better one. 
