@@ -87,4 +87,5 @@ pNMPCCODEGEN.setIntegrator = 'RK45';
 
 END_PNMPC_CONTROLLER
 %% Generate SFUNCTION
+make SFUNC;
 generateSFUNC('CRANE2D');
