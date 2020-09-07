@@ -26,6 +26,7 @@
 %
 
 clc; clear all; close all; 
+make clean;
 %% pNMPC MATLAB interface 
 BEGIN_PNMPC_CONTROLLER
 % States, inputs and parameters
