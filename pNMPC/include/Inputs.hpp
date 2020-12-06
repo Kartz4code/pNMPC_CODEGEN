@@ -25,7 +25,8 @@
 *
 */
 
-#pragma once
+#ifndef INPUTS_H
+#define INPUTS_H
 #include "pNMPC_headers.hpp"
 using namespace pNMPC;
 class Inputs : public HyperStates {
@@ -84,3 +85,4 @@ public:
 	const Real getLowerBound() const;
 
 };
+#endif

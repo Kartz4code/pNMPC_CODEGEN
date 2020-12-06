@@ -72,7 +72,7 @@ ParameterizationMap::ParameterizationMap(const MATHyperStates& HP) : EquationPro
 {
 	if (Builder::getPMBuild())
 	{
-		this->_h_MAT = std::move(HP);
+		this->_h_MAT = HP;
 		if (HP.getNumColumns() == 1)
 		{
 			for (size_t j{ 0 }; j < HP.getNumRows(); j++)
@@ -132,7 +132,7 @@ ParameterizationMap::ParameterizationMap(const EquationProcessor& EQ) : Equation
 		}
 		else
 		{
-			this->_h_MAT = std::move(EQ.getMATHyperStates());
+			this->_h_MAT = EQ.getMATHyperStates();
 			if (this->_h_MAT.getNumColumns() == 1)
 			{
 				for (size_t j{ 0 }; j < this->_h_MAT.getNumRows(); j++)

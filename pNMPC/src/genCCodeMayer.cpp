@@ -39,13 +39,15 @@ void PNMPCGEN::genCCodeMayer()
  
 =============================================================================================================
  */
+	HEADER_STREAM(license);
 	// Header files
 	#if(!ENABLE_CUDA && ENABLE_CPP)
 		// C++ BEGIN INTERFACE
 		__CPP_INTERFACE_BEGIN__
 	#endif
 
-	HEADER_STREAM(HEADER_GUARD);
+	// Header guard
+	HEADER_STREAM(C_HEADER_GUARD_BEGIN(FILE_MAYER_H_));
 	HEADER_STREAM(INCLUDE(FILE_PNMPC_H_));
 	HEADER_STREAM(INCLUDE(FILE_PARAMETERIZATION_MAP_H_));
 	// External libraries or dependent files
@@ -99,6 +101,7 @@ void PNMPCGEN::genCCodeMayer()
 	#endif
 	HEADER_STREAM_T(TYPE_C << "Mayer(Real_C X[nx], Real_C U[nu], Real_C P[np])");
 
+	HEADER_STREAM(C_HEADER_GUARD_END);
 	#if(!ENABLE_CUDA && ENABLE_CPP)
 		// C++ END INTERFACE
 		__CPP_INTERFACE_END__
@@ -115,7 +118,7 @@ void PNMPCGEN::genCCodeMayer()
 
  ==========================================================================================================
 */
-
+	CCODE_STREAM(license);
 	// C code
 	CCODE_STREAM(INCLUDE(FILE_MAYER_H_));
 	// Function definition (Mayer)

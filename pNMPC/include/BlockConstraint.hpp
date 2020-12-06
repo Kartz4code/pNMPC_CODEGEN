@@ -25,7 +25,8 @@
 *
 */
 
-#pragma once
+#ifndef BLOCK_CONSTRAINT_H
+#define BLOCK_CONSTRAINT_H
 #include "pNMPC_headers.hpp"
 class BlockConstraint
 {
@@ -42,4 +43,4 @@ public:
 	void Union(const BlockConstraint& bc2int);
 	~BlockConstraint();
 };
-
+#endif

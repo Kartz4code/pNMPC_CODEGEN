@@ -25,7 +25,8 @@
 *
 */
 
-#pragma once
+#ifndef PARAMS_H
+#define PARAMS_H
 #include "pNMPC_headers.hpp"
 using namespace pNMPC;
 class Params : public HyperStates {
@@ -54,3 +55,4 @@ public:
 	void operator=(const Real& val);
 	void operator=(const HyperStates& S);
 };
+#endif

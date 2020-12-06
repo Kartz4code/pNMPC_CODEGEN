@@ -25,7 +25,8 @@
 *
 */
 
-#pragma once
+#ifndef ELEMENT_H
+#define ELEMENT_H
 #include "pNMPC_headers.hpp"
 using namespace pNMPC;
 class Element
@@ -42,4 +43,5 @@ public:
 	virtual void setAliasExpression(const std::string& str) = 0;
 	~Element() = default;
 };
+#endif
 

@@ -25,7 +25,8 @@
 *
 */
 
-#pragma once
+#ifndef PIECEWISE_H
+#define PIECEWISE_H
 #include "pNMPC_headers.hpp"
 class Piecewise : public ControlParamZ<Piecewise>
 {
@@ -70,3 +71,4 @@ public:
 	}
 	~Piecewise() = default;
 };
+#endif

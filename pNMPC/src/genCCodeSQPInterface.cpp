@@ -39,13 +39,15 @@ void PNMPCGEN::genCCodeSQPInterface()
  
 =============================================================================================================
  */
+	HEADER_STREAM(license);
 	// Header files
 	#if(!ENABLE_CUDA && ENABLE_CPP)
 		// C++ BEGIN INTERFACE BEGIN
 		__CPP_INTERFACE_BEGIN__
 	#endif
 
-	HEADER_STREAM(HEADER_GUARD);
+	// Header guard
+	HEADER_STREAM(C_HEADER_GUARD_BEGIN(FILE_SQP_INTERFACE_H_));
 	HEADER_STREAM(INCLUDE(FILE_PNMPC_SQP_H_));
 	HEADER_STREAM(INCLUDE(FILE_SQP_BBOSQPOBJCall_H_));
 	HEADER_STREAM(INCLUDE(FILE_SQP_BBOSQPCONSTCall_H_));
@@ -85,6 +87,7 @@ void PNMPCGEN::genCCodeSQPInterface()
 	// Objecive value
 	HEADER_STREAM_T(VAR_PTR(fxSOL) << Paren[ParenOps::close]);
 
+	HEADER_STREAM(C_HEADER_GUARD_END);
 	#if(!ENABLE_CUDA && ENABLE_CPP)
 		// C++ END INTERFACE
 		__CPP_INTERFACE_END__
@@ -101,7 +104,7 @@ void PNMPCGEN::genCCodeSQPInterface()
 
  ==========================================================================================================
 */
-
+	CCODE_STREAM(license);
 	// C code
 	CCODE_STREAM(INCLUDE(FILE_SQP_INTERFACE_H_));
 

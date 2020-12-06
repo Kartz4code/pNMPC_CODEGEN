@@ -25,7 +25,8 @@
 *
 */
 
-#pragma once
+#ifndef SCALAROBJECTIVE_H
+#define SCALAROBJECTIVE_H
 #include "pNMPC_headers.hpp"
 using namespace pNMPC;
 class ScalarObjective : public EquationProcessor {
@@ -50,3 +51,4 @@ public:
 	const OBJTYPE& getObjectiveType() const;
 	~ScalarObjective() = default;
 };
+#endif

@@ -25,7 +25,8 @@
 *
 */
 
-#pragma once
+#ifndef BUILDER_H
+#define BUILDER_H
 class Builder
 {
 private:
@@ -80,4 +81,4 @@ public:
 	static const bool getPMBuild();
 	~Builder() = default;
 };
-
+#endif

@@ -39,14 +39,15 @@ void PNMPCGEN::genCCodeLagrangian()
  
 =============================================================================================================
  */
-
+	HEADER_STREAM(license);
 	// Header files
 	#if(!ENABLE_CUDA && ENABLE_CPP)
 		// C++ BEGIN INTERFACE
 		__CPP_INTERFACE_BEGIN__
 	#endif
 
-	HEADER_STREAM(HEADER_GUARD);
+	// Header guard
+	HEADER_STREAM(C_HEADER_GUARD_BEGIN(FILE_LAGRANGIAN_H_));
 	HEADER_STREAM(INCLUDE(FILE_PNMPC_H_));
 	HEADER_STREAM(INCLUDE(FILE_PARAMETERIZATION_MAP_H_));
 	// External libraries or dependent files
@@ -99,7 +100,8 @@ void PNMPCGEN::genCCodeLagrangian()
 		__CUDA_DEVICE_H__
 	#endif
 	HEADER_STREAM_T( TYPE_C << "Lagrangian(Real_C X[nx], Real_C U[nu], Real_C P[np])");
-
+	
+	HEADER_STREAM(C_HEADER_GUARD_END);
 	#if(!ENABLE_CUDA && ENABLE_CPP)
 		// C++ END INTERFACE
 		__CPP_INTERFACE_END__
@@ -116,7 +118,7 @@ void PNMPCGEN::genCCodeLagrangian()
 
  ==========================================================================================================
 */
-
+	CCODE_STREAM(license);
 	// C code
 	CCODE_STREAM(INCLUDE(FILE_LAGRANGIAN_H_));
 

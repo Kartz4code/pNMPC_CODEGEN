@@ -1,4 +1,32 @@
-#pragma once
+/*
+*    This file is part of pNMPC software.
+*    Copyright (c) 2020 GIPSA lab [https://github.com/Kartz4code/pNMPC_CODEGEN]
+*
+*    Main developer - Karthik Murali Madhavan Rathai
+*
+*    pNMPC - A Code Generation Software Tool For Implementation of Derivative Free
+*    Parameterized NMPC Scheme for Embedded Control Systems
+*    The software was developed by Karthik Murali Madhavan Rathai under the supervision of
+*    Mazen Alamir and Olivier Sename affiliated to Univ. Grenoble Alpes, CNRS, Grenoble INP,
+*    GIPSA lab, 38000 Grenoble, France.
+*
+* 	 pNMPC software is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*	 pNMPC software is distributed in the hope that it will be useful,
+*	 but WITHOUT ANY WARRANTY; without even the implied warranty of
+*	 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*	 GNU General Public License for more details.
+*
+*	 You should have received a copy of the GNU General Public License
+* 	 along with pNMPC software.  If not, see <http://www.gnu.org/licenses/>.
+*
+*/
+
+#ifndef PNMPC_H
+#define PNMPC_H
 #include "pNMPC_headers.hpp"
 
 #define sgn(x) ((x<0)?-1:1)
@@ -31,6 +59,7 @@ class Database;
 class HyperStates;
 class EquationProcessor;
 namespace pNMPC {
+
 	// Double type as Reals
 	typedef double Real;
 
@@ -59,9 +88,12 @@ namespace pNMPC {
 	bool is_number(const std::string& token);
 	// Is integer?
 	bool is_integer(const std::string& val);
+	// Is it one of the inbuilt function? 
 	bool is_function(const std::string& token);
-	size_t countStringSpaces(const std::string& str);
+	// Is it a proper function name?
 	bool isProperFunctionName(const std::string& str);
+	// Count number of spaces in a string
+	size_t countStringSpaces(const std::string& str);
 
 	// Matrix class
 	template<typename T>
@@ -551,7 +583,6 @@ namespace pNMPC {
 	// Greater than or equal to operator
 	MATHyperStates operator>=(HyperStates& x, MATHyperStates X);
 
-
 	// Otherfunctions
 	MATHyperStates sin(MATHyperStates X);
 	MATHyperStates cos(MATHyperStates X);
@@ -580,7 +611,7 @@ namespace pNMPC {
 	MATHyperStates minimum(MATHyperStates X, const Real& x);
 	MATHyperStates minimum(const Real& x, MATHyperStates X);
 
-
 	MATHyperStates transpose(EquationProcessor& EQ);
 	void pNMPC_free();
 }
+#endif

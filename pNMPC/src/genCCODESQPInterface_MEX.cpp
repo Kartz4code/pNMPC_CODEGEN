@@ -39,14 +39,15 @@ void PNMPCGEN::genCCodeSQPInterface_MEX()
  
 =============================================================================================================
  */
-
+	HEADER_STREAM(license);
 	// Header files
 	#if(!ENABLE_CUDA && ENABLE_CPP)
 		// C++ BEGIN INTERFACE BEGIN
 		__CPP_INTERFACE_BEGIN__
 	#endif
 
-	HEADER_STREAM(HEADER_GUARD);
+	// Header guard
+	HEADER_STREAM(C_HEADER_GUARD_BEGIN(FILE_SQP_INTERFACE_MEX_H_));
 	HEADER_STREAM(INCLUDE(FILE_MEX));
 	HEADER_STREAM(INCLUDE(FILE_PNMPC_SQP_H_));
 	HEADER_STREAM(INCLUDE(FILE_SQP_BBOSQPOBJCall_H_));
@@ -63,6 +64,7 @@ void PNMPCGEN::genCCodeSQPInterface_MEX()
 	HEADER_STREAM(COMMENT("Function prototype for SQP Interface MEX function"));
 	HEADER_STREAM_T("void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])");
 
+	HEADER_STREAM(C_HEADER_GUARD_END);
 	#if(!ENABLE_CUDA && ENABLE_CPP)
 		// C++ END INTERFACE
 		__CPP_INTERFACE_END__
@@ -79,7 +81,7 @@ void PNMPCGEN::genCCodeSQPInterface_MEX()
 
  ==========================================================================================================
 */
-
+	CCODE_STREAM(license);
 	// C code
 	CCODE_STREAM(INCLUDE(FILE_SQP_INTERFACE_MEX_H_));
 

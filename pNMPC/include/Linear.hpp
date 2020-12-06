@@ -25,7 +25,8 @@
 *
 */
 
-#pragma once
+#ifndef LINEAR_H
+#define LINEAR_H
 #include "pNMPC_headers.hpp"
 class Linear : public ControlParamZ<Linear>
 {
@@ -69,4 +70,5 @@ public:
 	}
 	~Linear() = default;
 };
+#endif
 

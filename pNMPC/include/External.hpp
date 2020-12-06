@@ -25,7 +25,8 @@
 *
 */
 
-#pragma once
+#ifndef EXTERNAL_H
+#define EXTERNAL_H
 #include "pNMPC_headers.hpp"
 using namespace pNMPC;
 class External : public HyperStates
@@ -38,4 +39,5 @@ public:
 	void operator=(const std::string& str);
 	~External() = default;
 };
+#endif
 

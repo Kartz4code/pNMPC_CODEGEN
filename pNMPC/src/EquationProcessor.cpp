@@ -18,111 +18,39 @@ EquationProcessor::operator MATHyperStates()
 		temp[0][0] = this->_h_store;
 		return temp;
 	}
-	else
-	return this->_h_MAT;
+	else 
+		return this->_h_MAT;
 }
 
 // Access the MATHyperStates element
-HyperStates* EquationProcessor::operator[](const size_t& n) 
-{ 
-	return &this->_h_MAT[n][0]; 
-}
+HyperStates* EquationProcessor::operator[](const size_t& n) { return &this->_h_MAT[n][0]; }
 
 // With respect to other Equation Processor objects (Elemenary Operations) => HyperStates operation
+MATHyperStates EquationProcessor::operator+(const HyperStates& s){ return this->_h_MAT + s; }
+MATHyperStates EquationProcessor::operator*(const HyperStates& s){ return this->_h_MAT*s; }
+MATHyperStates EquationProcessor::operator-(const HyperStates& s){ return this->_h_MAT - s; }
+MATHyperStates EquationProcessor::operator/(const HyperStates& s){ return this->_h_MAT / s; }
+MATHyperStates EquationProcessor::operator^(const HyperStates& s){ return ((this->_h_MAT)^s); }
+MATHyperStates EquationProcessor::operator<=(const HyperStates& s){ return this->_h_MAT <= s; }
+MATHyperStates EquationProcessor::operator>=(const HyperStates& s){ return this->_h_MAT >= s; }
 
-MATHyperStates EquationProcessor::operator+(const HyperStates& s)
-{
-	return this->_h_MAT + s;
-}
-MATHyperStates EquationProcessor::operator*(const HyperStates& s)
-{
-	return this->_h_MAT*s;
-}
-MATHyperStates EquationProcessor::operator-(const HyperStates& s)
-{
-	return this->_h_MAT - s;
-}
-MATHyperStates EquationProcessor::operator/(const HyperStates& s)
-{
-	return this->_h_MAT / s;
-}
-
-MATHyperStates EquationProcessor::operator^(const HyperStates& s)
-{
-	return ((this->_h_MAT) ^ s);
-}
-
-MATHyperStates EquationProcessor::operator<=(const HyperStates& s)
-{
-	return this->_h_MAT <= s;
-}
-MATHyperStates EquationProcessor::operator>=(const HyperStates& s)
-{
-	return this->_h_MAT >= s;
-}
-
-MATHyperStates EquationProcessor::operator+(const MATHyperStates& S)
-{
-	return this->_h_MAT + S;
-}
-
-MATHyperStates EquationProcessor::operator*(const MATHyperStates& S)
-{
-	return this->_h_MAT*S;
-}
-MATHyperStates EquationProcessor::operator-(const MATHyperStates& S)
-{
-	return this->_h_MAT - S;
-}
-
-MATHyperStates EquationProcessor::operator<=(const MATHyperStates& S)
-{
-	return this->_h_MAT <= S;
-}
-MATHyperStates EquationProcessor::operator>=(const MATHyperStates& S)
-{
-	return this->_h_MAT >= S;
-}
+MATHyperStates EquationProcessor::operator+(const MATHyperStates& S){ return this->_h_MAT + S; }
+MATHyperStates EquationProcessor::operator*(const MATHyperStates& S){ return this->_h_MAT*S; }
+MATHyperStates EquationProcessor::operator-(const MATHyperStates& S){ return this->_h_MAT - S; }
+MATHyperStates EquationProcessor::operator<=(const MATHyperStates& S){ return this->_h_MAT <= S; }
+MATHyperStates EquationProcessor::operator>=(const MATHyperStates& S){ return this->_h_MAT >= S; }
 
 // With respect to other Equation Processor objects (Elemenary Operations) => scalar operation
-MATHyperStates EquationProcessor::operator+(const Real& val)
-{
-	return this->_h_MAT + val;
-}
-
-MATHyperStates EquationProcessor::operator*(const Real& val)
-{
-	return this->_h_MAT + val;
-}
-
-MATHyperStates EquationProcessor::operator-(const Real& val)
-{
-	return this->_h_MAT - val;
-}
-MATHyperStates EquationProcessor::operator/(const Real& val)
-{
-	return this->_h_MAT / val;
-}
-
-MATHyperStates EquationProcessor::operator^(const Real& val)
-{
-	return ((this->_h_MAT) ^ val);
-}
-
-MATHyperStates EquationProcessor::operator<=(const Real& val)
-{
-	return this->_h_MAT <= val;
-}
-MATHyperStates EquationProcessor::operator>=(const Real& val)
-{
-	return this->_h_MAT >= val;
-}
+MATHyperStates EquationProcessor::operator+(const Real& val){ return this->_h_MAT + val; }
+MATHyperStates EquationProcessor::operator*(const Real& val){ return this->_h_MAT + val; }
+MATHyperStates EquationProcessor::operator-(const Real& val){ return this->_h_MAT - val; }
+MATHyperStates EquationProcessor::operator/(const Real& val){ return this->_h_MAT / val; }
+MATHyperStates EquationProcessor::operator^(const Real& val){ return ((this->_h_MAT) ^ val); }
+MATHyperStates EquationProcessor::operator<=(const Real& val){ return this->_h_MAT <= val; }
+MATHyperStates EquationProcessor::operator>=(const Real& val){ return this->_h_MAT >= val; }
 
 // Negation operator
-MATHyperStates EquationProcessor::operator- ()
-{
-	return -this->_h_MAT;
-}
+MATHyperStates EquationProcessor::operator- (){ return -this->_h_MAT; }
 
 void EquationProcessor::replace(const HyperStates* s_old, const HyperStates* s_new)
 {

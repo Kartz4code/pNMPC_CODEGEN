@@ -261,32 +261,32 @@ void HyperStates::operator=(const Real& val)
 
 HyperStates& HyperStates::operator=(const HyperStates& H)
 {
-	if (dynamic_cast<const States*>(&H))
+	if (auto it = dynamic_cast<const States*>(&H))
 	{
-		this->_h_value = dynamic_cast<const States*>(&H)->getValue();
-		this->_var_alias_name = Paren[ParenOps::open] + dynamic_cast<const States*>(&H)->getAliasExpression() + "*1" + Paren[ParenOps::close];
-		this->_expression = Paren[ParenOps::open] + dynamic_cast<const States*>(&H)->getExpression() + "*1" + Paren[ParenOps::close];
+		this->_h_value = it->getValue();
+		this->_var_alias_name = Paren[ParenOps::open] + it->getAliasExpression() + "*1" + Paren[ParenOps::close];
+		this->_expression = Paren[ParenOps::open] + it->getExpression() + "*1" + Paren[ParenOps::close];
 		return *this;
 	}
-	else if (dynamic_cast<const Inputs*>(&H))
+	else if (auto it = dynamic_cast<const Inputs*>(&H))
 	{
-		this->_h_value = dynamic_cast<const Inputs*>(&H)->getValue();
-		this->_var_alias_name = Paren[ParenOps::open] + dynamic_cast<const Inputs*>(&H)->getAliasExpression() + "*1" + Paren[ParenOps::close];
-		this->_expression = Paren[ParenOps::open] + dynamic_cast<const Inputs*>(&H)->getExpression() + "*1" + Paren[ParenOps::close];
+		this->_h_value = it->getValue();
+		this->_var_alias_name = Paren[ParenOps::open] + it->getAliasExpression() + "*1" + Paren[ParenOps::close];
+		this->_expression = Paren[ParenOps::open] + it->getExpression() + "*1" + Paren[ParenOps::close];
 		return *this;
 	}
-	else if (dynamic_cast<const Params*>(&H))
+	else if (auto it = dynamic_cast<const Params*>(&H))
 	{
-		this->_h_value = dynamic_cast<const Params*>(&H)->getValue();
-		this->_var_alias_name = Paren[ParenOps::open] + dynamic_cast<const Params*>(&H)->getAliasExpression() + "*1" + Paren[ParenOps::close];
-		this->_expression = Paren[ParenOps::open] + dynamic_cast<const Params*>(&H)->getExpression() + "*1" + Paren[ParenOps::close];
+		this->_h_value = it->getValue();
+		this->_var_alias_name = Paren[ParenOps::open] + it->getAliasExpression() + "*1" + Paren[ParenOps::close];
+		this->_expression = Paren[ParenOps::open] + it->getExpression() + "*1" + Paren[ParenOps::close];
 		return *this;
 	}
-	else if (dynamic_cast<const External*>(&H))
+	else if (auto it = dynamic_cast<const External*>(&H))
 	{
-		this->_h_value = dynamic_cast<const External*>(&H)->getValue();
-		this->_var_alias_name = Paren[ParenOps::open] + dynamic_cast<const External*>(&H)->getAliasExpression() + "*1" + Paren[ParenOps::close];
-		this->_expression = Paren[ParenOps::open] + dynamic_cast<const External*>(&H)->getExpression() + "*1" + Paren[ParenOps::close];
+		this->_h_value = it->getValue();
+		this->_var_alias_name = Paren[ParenOps::open] + it->getAliasExpression() + "*1" + Paren[ParenOps::close];
+		this->_expression = Paren[ParenOps::open] + it->getExpression() + "*1" + Paren[ParenOps::close];
 		return *this;
 	}
 	else
@@ -314,3 +314,298 @@ const size_t HyperStates::getCountHyperStates() const
 {
 	return this->_count_h;
 }
+
+// Logical " and "
+HyperStates operator&&(const HyperStates& s_lhs, const HyperStates& s_rhs)
+{
+	std::string before, after, lhs_new{ s_lhs.getAliasExpression() }, rhs_new{ s_rhs.getAliasExpression() };
+	size_t pos_leq, pos_geq;
+
+	pos_leq = s_lhs.find_string("<=");
+	pos_geq = s_lhs.find_string(">=");
+	// LHS side
+	if (pos_leq)
+	{
+		before = s_lhs.getExpression().substr(1, pos_leq - 1);
+		after = s_lhs.getExpression().substr(pos_leq + 2, s_lhs.getExpression().length() - pos_leq - 3);
+		if (is_number(after) && std::atof(after.c_str()) < 0)
+		{
+			after = std::to_string(-1 * std::atof(after.c_str()));
+			lhs_new = Paren[ParenOps::open] + before + Paren[ParenOps::space] + sOps[Operation::add] + Paren[ParenOps::space] + after + Paren[ParenOps::close];
+		}
+		else
+			lhs_new = Paren[ParenOps::open] + before + Paren[ParenOps::space] + sOps[Operation::subract] + Paren[ParenOps::space] + after + Paren[ParenOps::close];
+	}
+
+	if (pos_geq)
+	{
+		after = s_lhs.getExpression().substr(pos_geq + 2, s_lhs.getExpression().length() - pos_geq - 3);
+		before = s_lhs.getExpression().substr(1, pos_geq - 1);
+		if (is_number(before) && std::atof(before.c_str()) < 0)
+		{
+			before = std::to_string(-1 * std::atof(before.c_str()));
+			lhs_new = Paren[ParenOps::open] + after + Paren[ParenOps::space] + sOps[Operation::add] + Paren[ParenOps::space] + before + Paren[ParenOps::close];
+		}
+		else
+			lhs_new = Paren[ParenOps::open] + after + Paren[ParenOps::space] + sOps[Operation::subract] + Paren[ParenOps::space] + before + Paren[ParenOps::close];
+	}
+
+	// RHS side
+	pos_leq = s_rhs.find_string("<=");
+	pos_geq = s_rhs.find_string(">=");
+	if (pos_leq)
+	{
+		before = s_rhs.getExpression().substr(1, pos_leq - 1);
+		after = s_rhs.getExpression().substr(pos_leq + 2, s_rhs.getExpression().length() - pos_leq - 3);
+		if (is_number(after) && std::atof(after.c_str()) < 0)
+		{
+			after = std::to_string(-1 * std::atof(after.c_str()));
+			rhs_new = Paren[ParenOps::open] + before + Paren[ParenOps::space] + sOps[Operation::add] + Paren[ParenOps::space] + after + Paren[ParenOps::close];
+		}
+		else
+			rhs_new = Paren[ParenOps::open] + before + Paren[ParenOps::space] + sOps[Operation::subract] + Paren[ParenOps::space] + after + Paren[ParenOps::close];
+	}
+
+	if (pos_geq)
+	{
+		after = s_rhs.getExpression().substr(pos_geq + 2, s_rhs.getExpression().length() - pos_geq - 3);
+		before = s_rhs.getExpression().substr(1, pos_geq - 1);
+		if (is_number(before) && std::atof(before.c_str()) < 0)
+		{
+			before = std::to_string(-1 * std::atof(before.c_str()));
+			rhs_new = Paren[ParenOps::open] + after + Paren[ParenOps::space] + sOps[Operation::add] + Paren[ParenOps::space] + before + Paren[ParenOps::close];
+		}
+		else
+			rhs_new = Paren[ParenOps::open] + after + Paren[ParenOps::space] + sOps[Operation::subract] + Paren[ParenOps::space] + before + Paren[ParenOps::close];
+	}
+	return{ HyperStates{maximum(HyperStates{ lhs_new },0)} *HyperStates{maximum(HyperStates{ rhs_new },0)} };
+}
+
+// Logical " or "
+HyperStates operator||(const HyperStates& s_lhs, const HyperStates& s_rhs)
+{
+	std::string before, after, lhs_new{ s_lhs.getAliasExpression() }, rhs_new{ s_rhs.getAliasExpression() };
+	size_t pos_leq, pos_geq;
+
+	pos_leq = s_lhs.find_string("<=");
+	pos_geq = s_lhs.find_string(">=");
+	// LHS side
+	if (pos_leq)
+	{
+		before = s_lhs.getExpression().substr(1, pos_leq - 1);
+		after = s_lhs.getExpression().substr(pos_leq + 2, s_lhs.getExpression().length() - pos_leq - 3);
+		if (is_number(after) && std::atof(after.c_str()) < 0)
+		{
+			after = std::to_string(-1 * std::atof(after.c_str()));
+			lhs_new = Paren[ParenOps::open] + before + Paren[ParenOps::space] + sOps[Operation::add] + Paren[ParenOps::space] + after + Paren[ParenOps::close];
+		}
+		else
+			lhs_new = Paren[ParenOps::open] + before + Paren[ParenOps::space] + sOps[Operation::subract] + Paren[ParenOps::space] + after + Paren[ParenOps::close];
+	}
+
+	if (pos_geq)
+	{
+		after = s_lhs.getExpression().substr(pos_geq + 2, s_lhs.getExpression().length() - pos_geq - 3);
+		before = s_lhs.getExpression().substr(1, pos_geq - 1);
+		if (is_number(before) && std::atof(before.c_str()) < 0)
+		{
+			before = std::to_string(-1 * std::atof(before.c_str()));
+			lhs_new = Paren[ParenOps::open] + after + Paren[ParenOps::space] + sOps[Operation::add] + Paren[ParenOps::space] + before + Paren[ParenOps::close];
+		}
+		else
+			lhs_new = Paren[ParenOps::open] + after + Paren[ParenOps::space] + sOps[Operation::subract] + Paren[ParenOps::space] + before + Paren[ParenOps::close];
+	}
+
+	// RHS side
+	pos_leq = s_rhs.find_string("<=");
+	pos_geq = s_rhs.find_string(">=");
+	if (pos_leq)
+	{
+		before = s_rhs.getExpression().substr(1, pos_leq - 1);
+		after = s_rhs.getExpression().substr(pos_leq + 2, s_rhs.getExpression().length() - pos_leq - 3);
+		if (is_number(after) && std::atof(after.c_str()) < 0)
+		{
+			after = std::to_string(-1 * std::atof(after.c_str()));
+			rhs_new = Paren[ParenOps::open] + before + Paren[ParenOps::space] + sOps[Operation::add] + Paren[ParenOps::space] + after + Paren[ParenOps::close];
+		}
+		else
+			rhs_new = Paren[ParenOps::open] + before + Paren[ParenOps::space] + sOps[Operation::subract] + Paren[ParenOps::space] + after + Paren[ParenOps::close];
+	}
+
+	if (pos_geq)
+	{
+		after = s_rhs.getExpression().substr(pos_geq + 2, s_rhs.getExpression().length() - pos_geq - 3);
+		before = s_rhs.getExpression().substr(1, pos_geq - 1);
+		if (is_number(before) && std::atof(before.c_str()) < 0)
+		{
+			before = std::to_string(-1 * std::atof(before.c_str()));
+			rhs_new = Paren[ParenOps::open] + after + Paren[ParenOps::space] + sOps[Operation::add] + Paren[ParenOps::space] + before + Paren[ParenOps::close];
+		}
+		else
+			rhs_new = Paren[ParenOps::open] + after + Paren[ParenOps::space] + sOps[Operation::subract] + Paren[ParenOps::space] + before + Paren[ParenOps::close];
+	}
+
+	return{ HyperStates{ maximum(HyperStates{ lhs_new },0) } + HyperStates{ maximum(HyperStates{ rhs_new },0) } };
+}
+
+// Friend functions (L-value)
+HyperStates operator+(const Real& lhs, const HyperStates& rhs)
+{
+	return{ HyperStates(Paren[ParenOps::open] + std::to_string(lhs) + sOps[Operation::add] + 
+		    rhs.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates operator*(const Real& lhs, const HyperStates& rhs) {
+	return{ HyperStates(Paren[ParenOps::open] + std::to_string(lhs) + sOps[Operation::multiply] + 
+		    rhs.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates operator-(const Real& lhs, const HyperStates& rhs) {
+	return{ HyperStates(Paren[ParenOps::open] + std::to_string(lhs) + sOps[Operation::subract] + 
+		    rhs.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates operator/(const Real& lhs, const HyperStates& rhs) {
+	return{ HyperStates(Paren[ParenOps::open] + std::to_string(lhs) + sOps[Operation::divide] + 
+		    rhs.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates operator^(const Real& lhs, const HyperStates& rhs) {
+	return{ HyperStates(Paren[ParenOps::open] + std::to_string(lhs) + sOps[Operation::power] + 
+		    rhs.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates operator<=(const Real& lhs, const HyperStates& rhs) {
+	return{ HyperStates(Paren[ParenOps::open] + std::to_string(lhs) + sOps[Operation::leq] + 
+		    rhs.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates operator>=(const Real& lhs, const HyperStates& rhs) {
+	return{ HyperStates(Paren[ParenOps::open] + std::to_string(lhs) + sOps[Operation::geq] + 
+		    rhs.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+// Functions (Trigonometry, log, etc)
+// Trignometric functions (L-Value)
+HyperStates sin(const HyperStates& s)
+{
+	return{ HyperStates(Paren[ParenOps::open] + Functions[0] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates cos(const HyperStates& s)
+{
+	return{ HyperStates(Paren[ParenOps::open] + Functions[1] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates tan(const HyperStates& s)
+{
+	return{ HyperStates(Paren[ParenOps::open] + Functions[2] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates sinh(const HyperStates& s)
+{
+	return{ HyperStates(Paren[ParenOps::open] + Functions[3] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates cosh(const HyperStates& s)
+{
+	return{ HyperStates(Paren[ParenOps::open] + Functions[4] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates tanh(const HyperStates& s)
+{
+	return{ HyperStates(Paren[ParenOps::open] + Functions[5] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates exp(const HyperStates& s)
+{
+	return{ HyperStates(Paren[ParenOps::open] + Functions[6] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates log(const HyperStates& s)
+{
+	return{ HyperStates(Paren[ParenOps::open] + Functions[7] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates abs(const HyperStates& s)
+{
+	return{ HyperStates(Paren[ParenOps::open] + Functions[8] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates asin(const HyperStates& s)
+{
+	return{ HyperStates(Paren[ParenOps::open] + Functions[9] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates acos(const HyperStates& s)
+{
+	return{ HyperStates(Paren[ParenOps::open] + Functions[10] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates atan(const HyperStates& s)
+{
+	return{ HyperStates(Paren[ParenOps::open] + Functions[11] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates asinh(const HyperStates& s)
+{
+	return{ HyperStates(Paren[ParenOps::open] + Functions[12] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates acosh(const HyperStates& s)
+{
+	return{ HyperStates(Paren[ParenOps::open] + Functions[13] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates atanh(const HyperStates& s)
+{
+	return{ HyperStates(Paren[ParenOps::open] + Functions[14] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates sign(const HyperStates& s)
+{
+	return{ HyperStates(Paren[ParenOps::open] + Functions[18] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+// All max functions
+HyperStates maximum(const HyperStates& s_lhs, const HyperStates& s_rhs)
+{
+	return{ HyperStates(Paren[ParenOps::open] + s_lhs.getAliasExpression() + sOps[Operation::max] + s_rhs.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates maximum(const Real& s_lhs, const HyperStates& s_rhs)
+{
+	return{ HyperStates(Paren[ParenOps::open] + std::to_string(s_lhs) + sOps[Operation::max] + s_rhs.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates maximum(const HyperStates& s_lhs, const Real& s_rhs)
+{
+	return{ HyperStates(Paren[ParenOps::open] + s_lhs.getAliasExpression() + sOps[Operation::max] + std::to_string(s_rhs) + Paren[ParenOps::close]) };
+}
+
+HyperStates maximum(const Real& s_lhs, const Real& s_rhs)
+{
+	return{ HyperStates(Paren[ParenOps::open] + std::to_string(s_lhs) + sOps[Operation::max] + std::to_string(s_rhs) + Paren[ParenOps::close]) };
+}
+
+// All min functions
+HyperStates minimum(const HyperStates& s_lhs, const HyperStates& s_rhs)
+{
+	return{ HyperStates(Paren[ParenOps::open] + s_lhs.getAliasExpression() + sOps[Operation::min] + s_rhs.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates minimum(const Real& s_lhs, const HyperStates& s_rhs)
+{
+	return{ HyperStates(Paren[ParenOps::open] + std::to_string(s_lhs) + sOps[Operation::min] + s_rhs.getAliasExpression() + Paren[ParenOps::close]) };
+}
+
+HyperStates minimum(const HyperStates& s_lhs, const Real& s_rhs)
+{
+	return{ HyperStates(Paren[ParenOps::open] + s_lhs.getAliasExpression() + sOps[Operation::min] + std::to_string(s_rhs) + Paren[ParenOps::close]) };
+}
+
+HyperStates minimum(const Real& s_lhs, const Real& s_rhs)
+{
+	return{ HyperStates(Paren[ParenOps::open] + std::to_string(s_lhs) + sOps[Operation::min] + std::to_string(s_rhs) + Paren[ParenOps::close]) };
+}
+

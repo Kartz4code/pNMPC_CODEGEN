@@ -40,14 +40,15 @@ void PNMPCGEN::genCCodeBBOSQPCONSTCall()
  
 =============================================================================================================
  */
-                                                                                                   
+	HEADER_STREAM(license);
 	// Header files
 	#if(!ENABLE_CUDA && ENABLE_CPP)
 		// C++ BEGIN INTERFACE
 		__CPP_INTERFACE_BEGIN__
 	#endif
 
-	HEADER_STREAM(HEADER_GUARD);
+	// Header guard
+	HEADER_STREAM(C_HEADER_GUARD_BEGIN(FILE_SQP_BBOSQPCONSTCall_H_));
 	HEADER_STREAM(INCLUDE(FILE_PNMPC_H_));
 
 	// Function prototype for SQP - Constraints
@@ -56,7 +57,8 @@ void PNMPCGEN::genCCodeBBOSQPCONSTCall()
 		__CUDA_DEVICE_H__ 
 	#endif
 	HEADER_STREAM_T(TYPE_C << "func2BBOCONST_SQP(Real_C X_POINT[NMAX], const ParaStructC* XP_SQP)");
-
+	
+	HEADER_STREAM(C_HEADER_GUARD_END);
 	#if(!ENABLE_CUDA && ENABLE_CPP)
 		// C++ END INTERFACE
 		__CPP_INTERFACE_END__
@@ -73,7 +75,7 @@ void PNMPCGEN::genCCodeBBOSQPCONSTCall()
 
  ==========================================================================================================
 */
-
+	CCODE_STREAM(license);
 	// C code 
     // Include headers
 	CCODE_STREAM(INCLUDE(FILE_SQP_BBOSQPCONSTCall_H_));

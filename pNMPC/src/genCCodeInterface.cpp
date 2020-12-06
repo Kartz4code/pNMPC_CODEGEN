@@ -40,14 +40,16 @@ void PNMPCGEN::genCCodeInterface()
  
 =============================================================================================================
  */
+	HEADER_STREAM(license);
 	// Header files
 	#if(!ENABLE_CUDA && ENABLE_CPP)
 		// C++ BEGIN INTERFACE
 		__CPP_INTERFACE_BEGIN__
 	#endif
 
-	// HEADER CODE
-	HEADER_STREAM(HEADER_GUARD);
+	// HEADER CODE 
+	// Header guard
+	HEADER_STREAM(C_HEADER_GUARD_BEGIN(FILE_PNMPC_H_));
 	HEADER_STREAM(INCLUDE_GLOBAL(MATH));
 	HEADER_STREAM(INCLUDE_GLOBAL(STDLIB));
     
@@ -188,7 +190,7 @@ void PNMPCGEN::genCCodeInterface()
 		HEADER_STREAM_T(VAR_ARRAY(P, np));
 	else
 		HEADER_STREAM_T(VAR_ARRAY2D(P_horizon, Nh, np));
-	HEADER_STREAM_T("} ParaStructC");
+	HEADER_STREAM_T("\t} ParaStructC");
 
 	// Legacy codes for SQP interface
 	__BREAK_H__
@@ -237,7 +239,8 @@ void PNMPCGEN::genCCodeInterface()
 		HEADER_STREAM(COMMENT("Function pointer"));
 		HEADER_STREAM_T("typedef Real_C(*funcPointer)(Real_C* P, const ParaStructC* params)");
 	#endif
-
+	
+	HEADER_STREAM(C_HEADER_GUARD_END);
 	#if(!ENABLE_CUDA && ENABLE_CPP)
 		// C++ END INTERFACE
 		__CPP_INTERFACE_END__

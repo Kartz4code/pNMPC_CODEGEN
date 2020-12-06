@@ -25,7 +25,8 @@
 *
 */
 
-#pragma once
+#ifndef DATABASE_H
+#define DATABASE_H
 #include "pNMPC_headers.hpp"
 using namespace pNMPC;
 
@@ -79,10 +80,7 @@ class Database {
 	public:
 		Database() = default;
 		static Database* getInstance();
-		~Database()
-		{
-			delete this->_instance;
-		}
+		~Database() { delete this->_instance; }
 
 		// Obliterate Database
 		static void ObliterateDatabase();
@@ -124,3 +122,4 @@ class Database {
 			void disp();
 		#endif	
 };
+#endif

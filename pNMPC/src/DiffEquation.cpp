@@ -74,7 +74,7 @@ DiffEquation::DiffEquation(const MATHyperStates& HS) : EquationProcessor{ db->ac
 {
 	if (Builder::getDiffBuild())
 	{
-		this->_h_MAT = std::move(HS);
+		this->_h_MAT = HS;
 		if (HS.getNumColumns() == 1)
 		{
 			for (size_t j{ 0 }; j < HS.getNumRows(); j++)
@@ -137,7 +137,7 @@ DiffEquation::DiffEquation(const EquationProcessor& EQ) : EquationProcessor{ db-
 		}
 		else
 		{
-			this->_h_MAT = std::move(EQ.getMATHyperStates());
+			this->_h_MAT = EQ.getMATHyperStates();
 			if (this->_h_MAT.getNumColumns() == 1)
 			{
 				for (size_t j{ 0 }; j < this->_h_MAT.getNumRows(); j++)

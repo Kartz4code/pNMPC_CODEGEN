@@ -40,14 +40,15 @@ void PNMPCGEN::genCCodeDynamics()
  
 =============================================================================================================
  */
-
+	HEADER_STREAM(license);
 	#if(!ENABLE_CUDA && ENABLE_CPP)
 		// C++ BEGIN INTERFACE
 		__CPP_INTERFACE_BEGIN__
 	#endif
 
 	// BODY
-	HEADER_STREAM(HEADER_GUARD);
+	// Header guard
+	HEADER_STREAM(C_HEADER_GUARD_BEGIN(FILE_DYNAMICS_H_));
 	HEADER_STREAM(INCLUDE(FILE_PNMPC_H_));
 	if(this->_NPME)
 		HEADER_STREAM(INCLUDE(FILE_PARAMETERIZATION_MAP_H_));
@@ -97,7 +98,8 @@ void PNMPCGEN::genCCodeDynamics()
 		__CUDA_DEVICE_H__
 	#endif
 	HEADER_STREAM_T(TYPE_C_PTR << "Dynamics(Real_C X[nx], Real_C U[nu], Real_C P[np])");
-
+	
+	HEADER_STREAM(C_HEADER_GUARD_END);
 	#if(!ENABLE_CUDA && ENABLE_CPP)
 		// C++ END INTERFACE
 		__CPP_INTERFACE_END__
@@ -114,6 +116,7 @@ void PNMPCGEN::genCCodeDynamics()
 
  ==========================================================================================================
 */
+	CCODE_STREAM(license);
 	// BODY
 	CCODE_STREAM(INCLUDE(FILE_DYNAMICS_H_));
 	#if(!ENABLE_CUDA)

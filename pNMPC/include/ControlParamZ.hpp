@@ -25,7 +25,8 @@
 *
 */
 
-#pragma once
+#ifndef CONTROLPARAMZ_H
+#define CONTROLPARAMZ_H
 #include "pNMPC_headers.hpp"
 template<typename T>
 class ControlParamZ
@@ -34,7 +35,7 @@ protected:
 	const Real _delta{ 0.005 };
 	Inputs& _u_param;
 	std::vector<Real> _CP_default, _U_default;
-	Real _u_min, _u_max; size_t _N;
+	Real _u_min{ INT_MIN }, _u_max{INT_MAX}; size_t _N;
 
 public:
 	ControlParamZ() = default;
@@ -53,7 +54,7 @@ public:
 	}
 
 	// Control points setter - Vector case
-	ControlParamZ(const size_t& N, Inputs& u, const std::vector<Real>& CP_data, const Real& u_min = INT_MIN, const Real& u_max = INT_MAX)
+	ControlParamZ(const size_t& N, Inputs& u, const std::vector<Real>& CP_data, const Real& u_min, const Real& u_max)
 		: _N{N}, _u_param{ u }, _CP_default{ CP_data }, _u_min{ u_min }, _u_max{ u_max }
 	{
 		// CP - Control points in time, the input is in percentage w.r.t to the time horizon
@@ -63,7 +64,7 @@ public:
 	}
 
 	// Control points setter - Array case
-	ControlParamZ(const size_t& N, Inputs& u, Real* CP_data, const Real& u_min = INT_MIN, const Real& u_max = INT_MAX)
+	ControlParamZ(const size_t& N, Inputs& u, Real* CP_data, const Real& u_min, const Real& u_max)
 		: _N{N}, _u_param{ u }, _u_min{ u_min }, _u_max{ u_max }
 	{
 		// CP - Control points in time, the input is in percentage w.r.t to the time horizon
@@ -81,4 +82,5 @@ public:
 		return this->_N;
 	}
 };
+#endif
 

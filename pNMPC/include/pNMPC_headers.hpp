@@ -25,7 +25,10 @@
 *
 */
 
-#pragma once
+#ifndef PNMPC_HEADERS_H
+#define PNMPC_HEADERS_H
+// All flags
+#define CODEGEN
 #include <iostream>
 #include <chrono>
 #include <cmath>
@@ -40,8 +43,6 @@
 #include <type_traits>
 #include <fstream>
 #include <stdio.h>
-// All flags
-#define CODEGEN
 // All custom headers
 #include "pNMPC.hpp"
 #include "Database.hpp"
@@ -63,3 +64,4 @@
 #include "Piecewise.hpp"
 #include "SQPSolverCodeGen.hpp"
 #include "PNMPCGEN.hpp"
+#endif

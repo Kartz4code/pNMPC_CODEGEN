@@ -25,7 +25,8 @@
 *
 */
 
-#pragma once
+#ifndef DIFFEQUATION_H
+#define DIFFEQUATION_H
 #include "pNMPC_headers.hpp"
 using namespace pNMPC;
 class DiffEquation : public EquationProcessor {
@@ -47,3 +48,4 @@ public:
 	void operator=(Real&& val);
 	~DiffEquation() = default;
 };
+#endif

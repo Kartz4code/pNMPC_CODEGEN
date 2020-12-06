@@ -25,7 +25,8 @@
 *
 */
 
-#pragma once
+#ifndef PARAMETERIZATIONMAP_H
+#define PARAMETERIZATIONMAP_H
 #include "pNMPC_headers.hpp"
 class ParameterizationMap : public EquationProcessor
 {
@@ -46,4 +47,5 @@ public:
 	void operator=(Real&& val);
 	~ParameterizationMap() = default;
 };
+#endif
 

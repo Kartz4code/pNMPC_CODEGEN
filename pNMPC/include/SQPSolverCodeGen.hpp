@@ -25,7 +25,8 @@
 *
 */
 
-#pragma once
+#ifndef SQPSOLVERCODEGEN_H
+#define SQPSOLVERCODEGEN_H
 #include "pNMPC_headers.hpp"
 class SQPSolverCodeGen
 {
@@ -55,4 +56,5 @@ public:
 
 	~SQPSolverCodeGen() = default;
 };
+#endif
 

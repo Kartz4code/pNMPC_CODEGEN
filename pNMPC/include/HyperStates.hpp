@@ -1,4 +1,32 @@
-#pragma once
+/*
+*    This file is part of pNMPC software.
+*    Copyright (c) 2020 GIPSA lab [https://github.com/Kartz4code/pNMPC_CODEGEN]
+*
+*    Main developer - Karthik Murali Madhavan Rathai
+*
+*    pNMPC - A Code Generation Software Tool For Implementation of Derivative Free
+*    Parameterized NMPC Scheme for Embedded Control Systems
+*    The software was developed by Karthik Murali Madhavan Rathai under the supervision of
+*    Mazen Alamir and Olivier Sename affiliated to Univ. Grenoble Alpes, CNRS, Grenoble INP,
+*    GIPSA lab, 38000 Grenoble, France.
+*
+* 	 pNMPC software is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*	 pNMPC software is distributed in the hope that it will be useful,
+*	 but WITHOUT ANY WARRANTY; without even the implied warranty of
+*	 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*	 GNU General Public License for more details.
+*
+*	 You should have received a copy of the GNU General Public License
+* 	 along with pNMPC software.  If not, see <http://www.gnu.org/licenses/>.
+*
+*/
+
+#ifndef HYPERSTATES_H
+#define HYPERSTATES_H
 #include "pNMPC_headers.hpp"
 using namespace pNMPC;
 class HyperStates : public Element
@@ -60,339 +88,49 @@ public:
 	HyperStates& operator=(const HyperStates& H);
 
 	// Logical " and "
-	template<typename T = HyperStates>
-	friend HyperStates operator&&(const HyperStates& s_lhs, const HyperStates& s_rhs)
-	{
-		std::string before, after, lhs_new{ s_lhs.getAliasExpression() }, rhs_new{ s_rhs.getAliasExpression() };
-		size_t pos_leq, pos_geq;
-
-		pos_leq = s_lhs.find_string("<=");
-		pos_geq = s_lhs.find_string(">=");
-		// LHS side
-		if (pos_leq)
-		{
-			before = s_lhs.getExpression().substr(1, pos_leq-1);
-			after = s_lhs.getExpression().substr(pos_leq + 2, s_lhs.getExpression().length() - pos_leq - 3);
-			if (is_number(after) && std::atof(after.c_str()) < 0)
-			{
-				after = std::to_string(-1 * std::atof(after.c_str()));
-				lhs_new = Paren[ParenOps::open] + before + Paren[ParenOps::space] + sOps[Operation::add] + Paren[ParenOps::space] + after + Paren[ParenOps::close];
-			}
-			else
-				lhs_new = Paren[ParenOps::open] + before + Paren[ParenOps::space] + sOps[Operation::subract] + Paren[ParenOps::space] + after + Paren[ParenOps::close];
-		}
-
-		if (pos_geq)
-		{
-			after = s_lhs.getExpression().substr(pos_geq + 2, s_lhs.getExpression().length() - pos_geq - 3);
-			before = s_lhs.getExpression().substr(1, pos_geq - 1);
-			if (is_number(before) && std::atof(before.c_str()) < 0)
-			{
-				before = std::to_string(-1 * std::atof(before.c_str()));
-				lhs_new = Paren[ParenOps::open] + after + Paren[ParenOps::space] + sOps[Operation::add] + Paren[ParenOps::space] + before + Paren[ParenOps::close];
-			}
-			else
-				lhs_new = Paren[ParenOps::open] + after + Paren[ParenOps::space] + sOps[Operation::subract] + Paren[ParenOps::space] + before + Paren[ParenOps::close];
-		}
-
-		// RHS side
-		pos_leq = s_rhs.find_string("<=");
-		pos_geq = s_rhs.find_string(">=");
-		if (pos_leq)
-		{
-			before = s_rhs.getExpression().substr(1, pos_leq - 1);
-			after = s_rhs.getExpression().substr(pos_leq + 2, s_rhs.getExpression().length() - pos_leq - 3);
-			if (is_number(after) && std::atof(after.c_str()) < 0)
-			{
-				after = std::to_string(-1 * std::atof(after.c_str()));
-				rhs_new = Paren[ParenOps::open] + before + Paren[ParenOps::space] + sOps[Operation::add] + Paren[ParenOps::space] + after + Paren[ParenOps::close];
-			}
-			else
-				rhs_new = Paren[ParenOps::open] + before + Paren[ParenOps::space] + sOps[Operation::subract] + Paren[ParenOps::space] + after + Paren[ParenOps::close];
-		}
-
-		if (pos_geq)
-		{
-			after = s_rhs.getExpression().substr(pos_geq + 2, s_rhs.getExpression().length() - pos_geq - 3);
-			before = s_rhs.getExpression().substr(1, pos_geq - 1);
-			if (is_number(before) && std::atof(before.c_str()) < 0)
-			{
-				before = std::to_string(-1 * std::atof(before.c_str()));
-				rhs_new = Paren[ParenOps::open] + after + Paren[ParenOps::space] + sOps[Operation::add] + Paren[ParenOps::space] + before + Paren[ParenOps::close];
-			}
-			else
-				rhs_new = Paren[ParenOps::open] + after + Paren[ParenOps::space] + sOps[Operation::subract] + Paren[ParenOps::space] + before + Paren[ParenOps::close];
-		}
-		return{ HyperStates{maximum(HyperStates{ lhs_new },0)} * HyperStates{maximum(HyperStates{ rhs_new },0)} };
-	}
-
+	friend HyperStates operator&&(const HyperStates& s_lhs, const HyperStates& s_rhs);
 	// Logical " or "
-	template<typename T = HyperStates>
-	friend HyperStates operator||(const HyperStates& s_lhs, const HyperStates& s_rhs)
-	{
-		std::string before, after, lhs_new{ s_lhs.getAliasExpression() }, rhs_new{ s_rhs.getAliasExpression() };
-		size_t pos_leq, pos_geq;
-
-		pos_leq = s_lhs.find_string("<=");
-		pos_geq = s_lhs.find_string(">=");
-		// LHS side
-		if (pos_leq)
-		{
-			before = s_lhs.getExpression().substr(1, pos_leq - 1);
-			after = s_lhs.getExpression().substr(pos_leq + 2, s_lhs.getExpression().length() - pos_leq - 3);
-			if (is_number(after) && std::atof(after.c_str()) < 0)
-			{
-				after = std::to_string(-1 * std::atof(after.c_str()));
-				lhs_new = Paren[ParenOps::open] + before + Paren[ParenOps::space] + sOps[Operation::add] + Paren[ParenOps::space] + after + Paren[ParenOps::close];
-			}
-			else
-				lhs_new = Paren[ParenOps::open] + before + Paren[ParenOps::space] + sOps[Operation::subract] + Paren[ParenOps::space] + after + Paren[ParenOps::close];
-		}
-
-		if (pos_geq)
-		{
-			after = s_lhs.getExpression().substr(pos_geq + 2, s_lhs.getExpression().length() - pos_geq - 3);
-			before = s_lhs.getExpression().substr(1, pos_geq - 1);
-			if (is_number(before) && std::atof(before.c_str()) < 0)
-			{
-				before = std::to_string(-1 * std::atof(before.c_str()));
-				lhs_new = Paren[ParenOps::open] + after + Paren[ParenOps::space] + sOps[Operation::add] + Paren[ParenOps::space] + before + Paren[ParenOps::close];
-			}
-			else
-				lhs_new = Paren[ParenOps::open] + after + Paren[ParenOps::space] + sOps[Operation::subract] + Paren[ParenOps::space] + before + Paren[ParenOps::close];
-		}
-
-		// RHS side
-		pos_leq = s_rhs.find_string("<=");
-		pos_geq = s_rhs.find_string(">=");
-		if (pos_leq)
-		{
-			before = s_rhs.getExpression().substr(1, pos_leq - 1);
-			after = s_rhs.getExpression().substr(pos_leq + 2, s_rhs.getExpression().length() - pos_leq - 3);
-			if (is_number(after) && std::atof(after.c_str()) < 0)
-			{
-				after = std::to_string(-1 * std::atof(after.c_str()));
-				rhs_new = Paren[ParenOps::open] + before + Paren[ParenOps::space] + sOps[Operation::add] + Paren[ParenOps::space] + after + Paren[ParenOps::close];
-			}
-			else
-				rhs_new = Paren[ParenOps::open] + before + Paren[ParenOps::space] + sOps[Operation::subract] + Paren[ParenOps::space] + after + Paren[ParenOps::close];
-		}
-
-		if (pos_geq)
-		{
-			after = s_rhs.getExpression().substr(pos_geq + 2, s_rhs.getExpression().length() - pos_geq - 3);
-			before = s_rhs.getExpression().substr(1, pos_geq - 1);
-			if (is_number(before) && std::atof(before.c_str()) < 0)
-			{
-				before = std::to_string(-1 * std::atof(before.c_str()));
-				rhs_new = Paren[ParenOps::open] + after + Paren[ParenOps::space] + sOps[Operation::add] + Paren[ParenOps::space] + before + Paren[ParenOps::close];
-			}
-			else
-				rhs_new = Paren[ParenOps::open] + after + Paren[ParenOps::space] + sOps[Operation::subract] + Paren[ParenOps::space] + before + Paren[ParenOps::close];
-		}
-
-		return{ HyperStates{ maximum(HyperStates{ lhs_new },0) } + HyperStates{ maximum(HyperStates{ rhs_new },0) } };
-	}
-
-
+	friend HyperStates operator||(const HyperStates& s_lhs, const HyperStates& s_rhs);
 
 	// Friend functions (L-value)
-	template<typename T = HyperStates>
-	friend HyperStates operator+(const Real& lhs, HyperStates& rhs)
-	{
-		rhs.setExpression(rhs.getAliasExpression());
-		return{ HyperStates(Paren[ParenOps::open]
-			+ std::to_string(lhs) + sOps[Operation::add] + rhs.getExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates operator*(const Real& lhs, HyperStates& rhs) {
-		rhs.setExpression(rhs.getAliasExpression());
-		return{ HyperStates(Paren[ParenOps::open] + std::to_string(lhs) + sOps[Operation::multiply] + rhs.getExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates operator-(const Real& lhs, HyperStates& rhs) {
-		rhs.setExpression(rhs.getAliasExpression());
-		return{ HyperStates(Paren[ParenOps::open]
-			+ std::to_string(lhs) + sOps[Operation::subract] + rhs.getExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates operator/(const Real& lhs, HyperStates& rhs) {
-		rhs.setExpression(rhs.getAliasExpression());
-		return{ HyperStates(Paren[ParenOps::open]
-			+ std::to_string(lhs) + sOps[Operation::divide] + rhs.getExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates operator^(const Real& lhs, HyperStates& rhs) {
-		rhs.setExpression(rhs.getAliasExpression());
-		return{ HyperStates(Paren[ParenOps::open]
-			+ std::to_string(lhs) + sOps[Operation::power] + rhs.getExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates operator<=(const Real& lhs, HyperStates& rhs) {
-		rhs.setExpression(rhs.getAliasExpression());
-		return{ HyperStates(Paren[ParenOps::open]
-			+ std::to_string(lhs) + sOps[Operation::leq] + rhs.getExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates operator>=(const Real& lhs, HyperStates& rhs) {
-		rhs.setExpression(rhs.getAliasExpression());
-		return{ HyperStates(Paren[ParenOps::open]
-			+ std::to_string(lhs) + sOps[Operation::geq] + rhs.getExpression() + Paren[ParenOps::close]) };
-	}
+	friend HyperStates operator+(const Real& lhs, const HyperStates& rhs);
+	friend HyperStates operator*(const Real& lhs, const HyperStates& rhs);
+	friend HyperStates operator-(const Real& lhs, const HyperStates& rhs);
+	friend HyperStates operator/(const Real& lhs, const HyperStates& rhs);
+	friend HyperStates operator^(const Real& lhs, const HyperStates& rhs);
+	friend HyperStates operator<=(const Real& lhs, const HyperStates& rhs);
+	friend HyperStates operator>=(const Real& lhs, const HyperStates& rhs);
 
 	// Functions (Trigonometry, log, etc)
 	// Trignometric functions (L-Value)
-	template<typename T = HyperStates> 
-	friend HyperStates sin(const HyperStates& s)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + Functions[0] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates cos(const HyperStates& s)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + Functions[1] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates tan(const HyperStates& s)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + Functions[2] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates sinh(const HyperStates& s)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + Functions[3] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates cosh(const HyperStates& s)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + Functions[4] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates tanh(const HyperStates& s)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + Functions[5] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates exp(const HyperStates& s)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + Functions[6] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates log(const HyperStates& s)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + Functions[7] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates abs(const HyperStates& s)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + Functions[8] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates asin(const HyperStates& s)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + Functions[9] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates acos(const HyperStates& s)
-	{
-		return{ T(Paren[ParenOps::open] + Functions[10] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates atan(const HyperStates& s)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + Functions[11] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates asinh(const HyperStates& s)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + Functions[12] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates acosh(const HyperStates& s)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + Functions[13] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates atanh(const HyperStates& s)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + Functions[14] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates sign(const HyperStates& s)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + Functions[18] + Paren[ParenOps::space] + sOps[Operation::operate] + Paren[ParenOps::space] + s.getAliasExpression() + Paren[ParenOps::close]) };
-	}
+	friend HyperStates sin(const HyperStates& s);
+	friend HyperStates cos(const HyperStates& s);
+	friend HyperStates tan(const HyperStates& s);
+	friend HyperStates sinh(const HyperStates& s);
+	friend HyperStates cosh(const HyperStates& s);
+	friend HyperStates tanh(const HyperStates& s);
+	friend HyperStates exp(const HyperStates& s);
+	friend HyperStates log(const HyperStates& s);
+	friend HyperStates abs(const HyperStates& s);
+	friend HyperStates asin(const HyperStates& s);
+	friend HyperStates acos(const HyperStates& s);
+	friend HyperStates atan(const HyperStates& s);
+	friend HyperStates asinh(const HyperStates& s);
+	friend HyperStates acosh(const HyperStates& s);
+	friend HyperStates atanh(const HyperStates& s);
+	friend HyperStates sign(const HyperStates& s);
 
 	// All max functions
-	template<typename T = HyperStates>
-	friend HyperStates maximum(const HyperStates& s_lhs, const HyperStates& s_rhs)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + s_lhs.getAliasExpression() + sOps[Operation::max] + s_rhs.getAliasExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates maximum(const Real& s_lhs, const HyperStates& s_rhs)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + std::to_string(s_lhs) + sOps[Operation::max] + s_rhs.getAliasExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates maximum(const HyperStates& s_lhs, const Real& s_rhs)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + s_lhs.getAliasExpression() + sOps[Operation::max] + std::to_string(s_rhs) + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates maximum(const Real& s_lhs, const Real& s_rhs)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + std::to_string(s_lhs) + sOps[Operation::max] + std::to_string(s_rhs) + Paren[ParenOps::close]) };
-	}
+	friend HyperStates maximum(const HyperStates& s_lhs, const HyperStates& s_rhs);
+	friend HyperStates maximum(const Real& s_lhs, const HyperStates& s_rhs);
+	friend HyperStates maximum(const HyperStates& s_lhs, const Real& s_rhs);
+	friend HyperStates maximum(const Real& s_lhs, const Real& s_rhs);
 
 	// All min functions
-	template<typename T = HyperStates>
-	friend HyperStates minimum(const HyperStates& s_lhs, const HyperStates& s_rhs)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + s_lhs.getAliasExpression() + sOps[Operation::min] + s_rhs.getAliasExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates minimum(const Real& s_lhs, const HyperStates& s_rhs)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + std::to_string(s_lhs) + sOps[Operation::min] + s_rhs.getAliasExpression() + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates minimum(const HyperStates& s_lhs, const Real& s_rhs)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + s_lhs.getAliasExpression() + sOps[Operation::min] + std::to_string(s_rhs) + Paren[ParenOps::close]) };
-	}
-
-	template<typename T = HyperStates>
-	friend HyperStates minimum(const Real& s_lhs, const Real& s_rhs)
-	{
-		return{ HyperStates(Paren[ParenOps::open] + std::to_string(s_lhs) + sOps[Operation::min] + std::to_string(s_rhs) + Paren[ParenOps::close]) };
-	}
+	friend HyperStates minimum(const HyperStates& s_lhs, const HyperStates& s_rhs);
+	friend HyperStates minimum(const Real& s_lhs, const HyperStates& s_rhs);
+	friend HyperStates minimum(const HyperStates& s_lhs, const Real& s_rhs);
+	friend HyperStates minimum(const Real& s_lhs, const Real& s_rhs);
 
 	// Output stream
 	friend std::ostream& operator<<(std::ostream& os, const HyperStates& S);
@@ -415,3 +153,4 @@ public:
 	// Destructor
 	~HyperStates() = default;
 };
+#endif

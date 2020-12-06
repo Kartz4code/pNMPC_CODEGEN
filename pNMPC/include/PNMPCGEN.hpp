@@ -25,8 +25,53 @@
 *
 */
 
-#pragma once
+#ifndef PNMPCGEN_H
+#define PNMPCGEN_H
 #include "pNMPC_headers.hpp"
+
+// CPP begin wrapper
+constexpr const char* cppstr_begin = "#ifdef __cplusplus\n\
+extern \"C\"{\n\
+#endif\n\n";
+
+// CPP end wrapper
+constexpr const char* cppstr_end = "#ifdef __cplusplus\n\
+}\n\
+#endif\n";
+
+// License document 
+constexpr const char* license = "/* \n\
+* This file is part of pNMPC software.\n\
+* Copyright(c) 2020 GIPSA lab[https://github.com/Kartz4code/pNMPC_CODEGEN]\n\
+*\n\
+* Main developer - Karthik Murali Madhavan Rathai\n\
+*\n\
+* pNMPC - A Code Generation Software Tool For Implementation of Derivative Free\n\
+* Parameterized NMPC Scheme for Embedded Control Systems\n\
+* The software was developed by Karthik Murali Madhavan Rathai under the supervision of\n\
+* Mazen Alamirand Olivier Sename affiliated to Univ.Grenoble Alpes, CNRS, Grenoble INP,\n\
+* GIPSA lab, 38000 Grenoble, France.\n\
+*\n\
+* pNMPC software is free software : you can redistribute itand /or modify\n\
+* it under the terms of the GNU General Public License as published by\n\
+* the Free Software Foundation, either version 3 of the License, or\n\
+* (at your option) any later version.\n\
+*\n\
+* pNMPC software is distributed in the hope that it will be useful, \n\
+* but WITHOUT ANY WARRANTY; without even the implied warranty of\n\
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the\n\
+* GNU General Public License for more details.\n\
+*\n\
+* You should have received a copy of the GNU General Public License\n\
+* along with pNMPC software.If not, see <http://www.gnu.org/licenses/>. \n\
+*\n\
+*/\n";
+
+// Preprocessors to enable CPP or CUDA or MEX or S-function
+#ifdef __cplusplus
+	#define ENABLE_CPP 1
+#endif
+
 // CODEGEN preprocessors
 #define HEADER_GUARD "#pragma once"
 
@@ -99,20 +144,11 @@
 #define MEX_NLHS "\"pNMPC:nlhs\""
 
 // CPP INTERFACE CODE BEGIN
-#define __CPP_INTERFACE_BEGIN__ std::ifstream cpp_begin("pNMPC/CPPInterface/CPP_INTERFACE_BEGIN.dat");\
-								if (cpp_begin)\
-								{\
-									oss_h << cpp_begin.rdbuf();\
-									cpp_begin.close();\
-								}\
+#define __CPP_INTERFACE_BEGIN__ { oss_h << cppstr_begin; }
 
 // CPP INTERFACE CODE END
-#define __CPP_INTERFACE_END__ 	std::ifstream cpp_end("pNMPC/CPPInterface/CPP_INTERFACE_END.dat");\
-								if (cpp_end)\
-								{\
-									oss_h << cpp_end.rdbuf();\
-									cpp_end.close();\
-								}\
+#define __CPP_INTERFACE_END__ {oss_h << cppstr_end; }
+
 // EXPORT HEADER
 #define EXPORT_HEADER(y, x) std::ofstream outfile_h{ std::string(y) + x };\
 						    outfile_h << oss_h.str() << std::endl;\
@@ -128,6 +164,11 @@
 						      outfile_in << oss_in.str();\
 						      outfile_in.close();\
 						      oss_in.str(std::string())\
+
+#define C_HEADER_GUARD_BEGIN(x) std::string("#ifndef ") + #x + "\n" + \
+							    "#define " + #x + "\n"
+
+#define C_HEADER_GUARD_END std::string("\n#endif")
 
 // CODEGEN FILES
 #define MATH "math.h"
@@ -250,7 +291,6 @@ private:
 	void genCCodeLagrangian();
 	void genCCodeMayer();
 	void genCCodePNMPC_SQP();
-	void genCCodeBBONMCall();
 	void genCCodeBBOSQPOBJCall();
 	void genCCodeBBOSQPCONSTCall();
 	void genCCodeSQPInterface();
@@ -261,7 +301,7 @@ private:
 	Real _init_time{ 0 };
 	Real _final_time{ 1 };
 	Real _step_size{ 0.1 };
-	// SolverCodeGen nullptr
+	// SolverCodeGen
 	SQPSolverCodeGen _SCG;
 	// Integrator type
 	INTEGRATOR _itype{INTEGRATOR::EU};
@@ -312,4 +352,4 @@ public:
 	const size_t getTerminalConstraintSize() const;
 	~PNMPCGEN();
 };
-
+#endif

@@ -300,7 +300,4 @@ void PNMPCGEN::genCCode()
 	#endif
 }
 
-PNMPCGEN::~PNMPCGEN()
-{
-	delete this->_instance;
-}
+PNMPCGEN::~PNMPCGEN() { delete this->_instance; }

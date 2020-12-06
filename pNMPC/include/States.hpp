@@ -25,7 +25,8 @@
 *
 */
 
-#pragma once
+#ifndef STATES_H
+#define STATES_H
 #include "pNMPC_headers.hpp"
 using namespace pNMPC;
 class States : public HyperStates {
@@ -54,3 +55,4 @@ public:
 	void operator=(const Real& val);
 	void operator=(const HyperStates& S);
 };
+#endif

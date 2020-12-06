@@ -110,7 +110,7 @@ ScalarConstraint::ScalarConstraint(const ScalarConstraint& SCS) : EquationProces
 		}
 		else
 		{
-			this->_h_MAT = std::move(SCS.getMATHyperStates());
+			this->_h_MAT = SCS.getMATHyperStates();
 			if (this->_h_MAT.getNumColumns() == 1)
 			{
 				if (Builder::getRegConstBuild())
@@ -178,7 +178,7 @@ ScalarConstraint::ScalarConstraint(const MATHyperStates& HSC) : EquationProcesso
 			this->_ConstraintType = CONSTTYPE::REGULAR;
 		if (Builder::getTermConstBuild())
 			this->_ConstraintType = CONSTTYPE::TERMINAL;
-		this->_h_MAT = std::move(HSC);
+		this->_h_MAT = HSC;
 		if (HSC.getNumColumns() == 1)
 		{
 			for (size_t j{ 0 }; j < HSC.getNumRows(); j++)
@@ -290,7 +290,7 @@ ScalarConstraint::ScalarConstraint(const EquationProcessor& EQ) : EquationProces
 		}
 		else
 		{
-			this->_h_MAT = std::move(EQ.getMATHyperStates());
+			this->_h_MAT = EQ.getMATHyperStates();
 			if (this->_h_MAT.getNumColumns() == 1)
 			{
 				if (Builder::getRegConstBuild())

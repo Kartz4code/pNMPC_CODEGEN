@@ -122,7 +122,7 @@ ScalarObjective::ScalarObjective(const MATHyperStates& HSO) : EquationProcessor{
 			this->_ObjectiveType = OBJTYPE::LAGRANGIAN;
 		if (Builder::getMayObjBuild())
 			this->_ObjectiveType = OBJTYPE::MAYER;
-		this->_h_MAT = std::move(HSO);
+		this->_h_MAT = HSO;
 		if (HSO.getNumColumns() == 1)
 		{
 			for (size_t j{ 0 }; j < HSO.getNumRows(); j++)
@@ -172,7 +172,7 @@ ScalarObjective::ScalarObjective(const ScalarObjective& SOS) : EquationProcessor
 			++this->_countobj;
 		}
 		else {
-			this->_h_MAT = std::move(SOS.getMATHyperStates());
+			this->_h_MAT = SOS.getMATHyperStates();
 			if (this->_h_MAT.getNumColumns() == 1)
 			{
 				if (Builder::getLagObjBuild())
@@ -291,7 +291,7 @@ ScalarObjective::ScalarObjective(const EquationProcessor& EQ) : EquationProcesso
 			++this->_countobj;
 		}
 		else {
-			this->_h_MAT = std::move(EQ.getMATHyperStates());
+			this->_h_MAT = EQ.getMATHyperStates();
 			if (this->_h_MAT.getNumColumns() == 1)
 			{
 				if (Builder::getLagObjBuild())

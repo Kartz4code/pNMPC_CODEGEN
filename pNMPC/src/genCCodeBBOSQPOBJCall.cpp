@@ -39,13 +39,15 @@ void PNMPCGEN::genCCodeBBOSQPOBJCall()
  
 =============================================================================================================
  */
+	HEADER_STREAM(license);
 	// Header files
 	#if(!ENABLE_CUDA && ENABLE_CPP)
 		// C++ BEGIN INTERFACE
 		__CPP_INTERFACE_BEGIN__
 	#endif
 
-	HEADER_STREAM(HEADER_GUARD);
+	// Header guard
+	HEADER_STREAM(C_HEADER_GUARD_BEGIN(FILE_SQP_BBOSQPOBJCall_H_));
 	HEADER_STREAM(INCLUDE(FILE_PNMPC_H_));
 
 	// Function prototype for SQP Objective
@@ -54,7 +56,8 @@ void PNMPCGEN::genCCodeBBOSQPOBJCall()
 		__CUDA_DEVICE_H__
 	#endif
 	HEADER_STREAM_T(TYPE_C << "func2BBOOBJ_SQP(Real_C X_POINT[NMAX], const ParaStructC* XP_SQP)");
-
+	
+	HEADER_STREAM(C_HEADER_GUARD_END);
 	#if(!ENABLE_CUDA && ENABLE_CPP)
 		// C++ END INTERFACE
 		__CPP_INTERFACE_END__
@@ -71,6 +74,7 @@ void PNMPCGEN::genCCodeBBOSQPOBJCall()
 
  ==========================================================================================================
 */
+	CCODE_STREAM(license);
 	// C code
 	CCODE_STREAM(INCLUDE(FILE_SQP_BBOSQPOBJCall_H_));
 	CCODE_STREAM(INCLUDE(FILE_PNMPC_SQP_H_));

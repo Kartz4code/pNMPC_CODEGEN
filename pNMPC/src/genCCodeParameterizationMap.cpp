@@ -39,6 +39,7 @@ void PNMPCGEN::genCCodeParameterizationMap()
  
 =============================================================================================================
  */
+	HEADER_STREAM(license);
 	// Header files
 	#if(!ENABLE_CUDA && ENABLE_CPP)
 		// C++ BEGIN INTERFACE
@@ -46,7 +47,8 @@ void PNMPCGEN::genCCodeParameterizationMap()
 	#endif
 
 	// BODY
-	HEADER_STREAM(HEADER_GUARD);
+	// Header guard
+	HEADER_STREAM(C_HEADER_GUARD_BEGIN(FILE_PARAMETERIZATION_MAP_H_));
 	HEADER_STREAM(INCLUDE(FILE_PNMPC_H_));
 
 	// External libraries or dependent files
@@ -104,6 +106,7 @@ void PNMPCGEN::genCCodeParameterizationMap()
 		HEADER_STREAM_T(TYPE_C_PTR << "ParameterInputMapHost(Real_C X[nx], Real_C U[nu], Real_C P[np])");
 	#endif
 
+	HEADER_STREAM(C_HEADER_GUARD_END);
 	#if(!ENABLE_CUDA && ENABLE_CPP)
 		// C++ END INTERFACE
 		__CPP_INTERFACE_END__
@@ -120,7 +123,7 @@ void PNMPCGEN::genCCodeParameterizationMap()
                                                                                      
  ==========================================================================================================
 */
-
+	CCODE_STREAM(license);
 	// C code
 	// BODY
 	CCODE_STREAM(INCLUDE(FILE_PARAMETERIZATION_MAP_H_));
@@ -223,6 +226,7 @@ void PNMPCGEN::genCCodeParameterizationMap()
 */
 	// C code
 	#if(ENABLE_CUDA)
+		CCODE_STREAM(license);
 		// Function definition (ParameterizationMap)
 		CCODE_STREAM(COMMENT("Function definition (ParameterizationMapHost)"));
 		#if(ENABLE_CUDA)

@@ -313,12 +313,10 @@ void EquationProcessor::tree_reduction(const size_t& start)
 							has_replaced = true;
 						}
 					}
-					if (has_replaced = true)
-					{
+						has_replaced = true;
 						delete this->_OpSet[j].first;
 						this->_OpSet.erase(this->_OpSet.begin() + j);
 						i = start-1;
-					}
 				}
 			}
 		}

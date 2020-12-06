@@ -25,7 +25,8 @@
 *
 */
 
-#pragma once
+#ifndef SCALARCONSTRAINT_H
+#define SCALARCONSTRAINT_H
 #include "pNMPC_headers.hpp"
 using namespace pNMPC;
 class ScalarConstraint : public EquationProcessor {
@@ -50,3 +51,4 @@ public:
 	const CONSTTYPE& getConstraintType() const;
 	~ScalarConstraint() = default;
 };
+#endif
